@@ -389,20 +389,137 @@ const recipes = {
 
 /* MIXER INTERACTIONS */
 
-player1.onCollide("mixer", () => {
-	recipeToMake = checkInventoryForRecipe(playerInventories.player1);
-	if(recipeToMake!=null){
-		playerInventories.player1 = [null, null, null]
-		addToInventory(1, "blank")
-		addToInventory(1, "blank")
-		addToInventory(1, "blank")
-		playerInventories.player1 = [null, null, null]
+loadSprite("mixerPinkGlow", "sprites/mixerPinkGlow.png");
+loadSprite("mixerBlueGlow", "sprites/mixerBlueGlow.png");
+loadSprite("mixerGreenGlow", "sprites/mixerGreenGlow.png");
+loadSprite("mixerBlackGlow", "sprites/mixerBlackGlow.png");
+loadSprite("mixerTimer", "sprites/mixerTimer.png");
+var mixerGlow;
+let recipeTried = true;
+let inMixerCollide = false;
+let mixerInUse = false;
+var mixerTimer;
+var recipeInMixer;
 
-		addToInventory(1, recipeToMake + "Batter")
-		
+player1.onCollide("mixer", () => {
+	recipeTried = false;
+	inMixerCollide = true;
+	if(mixerGlow){
+		mixerGlow.destroy();
 	}
-	
+	if(!mixerInUse){
+		mixerGlow = k.add([
+			sprite("mixerPinkGlow"),
+			pos(380, 1),
+			area(),
+			scale(.2),
+			body({ isStatic: true}),
+			"mixerPinkGlow"
+		]);
+	} else {
+		if(mixerTimer==null){
+			takeBatterOut(player1);
+		}
+	}
 })
+
+player1.onCollideUpdate("mixer", () => {
+	onKeyPress(",", () => {
+		if(inMixerCollide && !mixerInUse){
+			recipeToMake = checkInventoryForRecipe(playerInventories.player1);
+			if(mixerGlow && !recipeTried){
+				mixerGlow.destroy();
+			}
+	
+			if(recipeToMake!=null){
+	
+				playerInventories.player1 = [null, null, null]
+				addToInventory(1, "blank")
+				addToInventory(1, "blank")
+				addToInventory(1, "blank")
+				playerInventories.player1 = [null, null, null]
+				recipeInMixer = recipeToMake;
+				useMixer();
+
+			} else if (!recipeTried) {
+				mixerGlow = k.add([
+					sprite("mixerBlackGlow"),
+					pos(380, 1),
+					area(),
+					scale(.2),
+					body({ isStatic: true}),
+					"mixerBlackGlow"
+				]);
+			}
+			recipeTried = true;
+		}
+	})
+})
+
+k.onCollideEnd("player", "mixer", () => {
+	mixerGlow.destroy();
+	recipeTried = false;
+	inMixerCollide = false;
+});
+
+function useMixer(){
+	mixerInUse = true;
+	mixerTimer = k.add([
+		sprite("mixerTimer"),
+		pos(380, 1),
+		area(),
+		scale(.2),
+		body({ isStatic: true}),
+		"mixerTimer"
+	]);
+
+	fadeOut(mixerTimer, 10);
+
+	k.wait(10, () => {
+	    if (mixerGlow) {
+	        mixerGlow.destroy();
+	    }
+	    mixerGlow = k.add([
+	        sprite("mixerGreenGlow"),
+	        pos(380, 1),
+	        area(),
+	        scale(.2),
+	        body({ isStatic: true}),
+	        "mixerGreenGlow"
+	    ]);
+		mixerTimer = null;
+	});
+}
+
+function fadeOut(obj, duration) {
+    let alphaValue = 1;
+    const fadeStep = 1 / (duration / k.dt());
+
+    obj.onUpdate(() => {
+        if (alphaValue > 0) {
+            alphaValue -= fadeStep;
+            obj.opacity = alphaValue;
+        } else {
+            destroy(obj);
+        }
+    });
+}
+
+function takeBatterOut(player){
+	// only if they have an open spot for the mix to go
+	if((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
+		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))){
+		
+		mixerGlow.destroy();
+		mixerInUse = false;
+
+		if(player == player1){
+			addToInventory(1, recipeInMixer + "Batter")
+		} else {
+			addToInventory(2, recipeInMixer + "Batter")
+		}
+	}
+}
 
 // Function to check if a player's inventory matches any recipe
 function checkInventoryForRecipe(playerInventory) {
@@ -423,4 +540,85 @@ function arraysEqual(arr1, arr2) {
         if (sortedArr1[i] !== sortedArr2[i]) return false;
     }
     return true;
+}
+
+
+/* OVEN INTERACTIONS */
+
+loadSprite("ovenPinkGlow", "sprites/ovenPinkGlow.png");
+loadSprite("ovenBlueGlow", "sprites/ovenBlueGlow.png");
+loadSprite("ovenGreenGlow", "sprites/ovenGreenGlow.png");
+loadSprite("ovenBlackGlow", "sprites/ovenBlackGlow.png");
+var ovenGlow;
+let batterTried = true;
+let batterTypeInOven;
+let inOvenCollide = false;
+
+player1.onCollide("oven", () => {
+	recipeTried = false;
+	inOvenCollide = true;
+	if(ovenGlow){
+		ovenGlow.destroy();
+	}
+	ovenGlow = k.add([
+		sprite("ovenPinkGlow"),
+		pos(138, 38),
+		area(),
+		scale(.15),
+		body({ isStatic: true}),
+		"ovenPinkGlow"
+	]);
+})
+
+player1.onCollideUpdate("oven", () => {
+	onKeyPress(",", () => {
+		if(inOvenCollide){
+			batterToCook = checkInventoryForBatter(playerInventories.player1);
+			if(ovenGlow && !batterTried){
+				ovenGlow.destroy();
+			}
+
+			if(batterToCook!=-1){
+				ovenGlow = k.add([
+					sprite("ovenBlueGlow"),
+					pos(138, 38),
+					area(),
+					scale(.15),
+					body({ isStatic: true}),
+					"ovenBlueGlow"
+				]);
+				updateInventorySlot(1, batterToCook, "sprites/blank.png")
+				batterTypeInOven = playerInventories.player1[batterToCook];
+				playerInventories.player1[batterToCook] = null
+
+			} else if (!batterTried) {
+				ovenGlow = k.add([
+					sprite("ovenBlackGlow"),
+					pos(138, 38),
+					area(),
+					scale(.15),
+					body({ isStatic: true}),
+					"ovenBlackGlow"
+				]);
+			}
+			batterTried = true;
+		}
+	})
+})
+
+k.onCollideEnd("player", "oven", () => {
+	ovenGlow.destroy();
+	batterTried = false;
+	inOvenCollide = false;
+});
+
+// Function to check if a player's inventory has any batter 
+function checkInventoryForBatter(playerInventory) {
+    for (let i = 0; i < playerInventory.length; i++) {
+        if (playerInventory[i]!=null && playerInventory[i].includes("Batter")) { // use includes instead of contains
+            playerInventory[i] = playerInventory[i].substring(0, playerInventory[i].length - "Batter".length);
+            return i;
+        }
+    }
+    return -1; // return -1 if no element contains "Batter"
 }
