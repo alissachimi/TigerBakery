@@ -46,6 +46,8 @@ loadSprite("strawberry", "sprites/strawberry.png");
 loadSprite("oven", "sprites/oven.png");
 loadSprite("frostingCounter", "sprites/frostingCounter.png");
 loadSprite("floor", "sprites/floor-wooden.png");
+loadSprite("displayCase", "sprites/displayCase.png");
+loadSprite("register", "sprites/register.png");
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -272,6 +274,43 @@ k.add([
     scale(.2),
 	body({ isStatic: true}),
 ]);
+k.add([
+    sprite("displayCase"),
+    pos(0, 330), // Starting position
+    area(),        // Enable collision area
+    scale(.3),
+	body({ isStatic: true}),
+]);
+k.add([
+    sprite("displayCase"),
+    pos(195, 330), // Starting position
+    area(),        // Enable collision area
+    scale(.3),
+	body({ isStatic: true}),
+]);
+k.add([
+    sprite("displayCase"),
+    pos(390, 330), // Starting position
+    area(),        // Enable collision area
+    scale(.3),
+	body({ isStatic: true}),
+]);
+k.add([
+    sprite("displayCase"),
+    pos(585, 330), // Starting position
+    area(),        // Enable collision area
+    scale(.3),
+	body({ isStatic: true}),
+]);
+
+k.add([
+    sprite("register"),
+    pos(785, 330), // Starting position
+    area(),        // Enable collision area
+    scale(.3),
+	body({ isStatic: true}),
+]);
+
 const frostingCounter = k.add([
     sprite("frostingCounter"),
     pos(140, 1), // Starting position
