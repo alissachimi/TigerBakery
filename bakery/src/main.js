@@ -309,6 +309,7 @@ k.add([
     area(),        // Enable collision area
     scale(.3),
 	body({ isStatic: true}),
+    "register"
 ]);
 
 const frostingCounter = k.add([
@@ -326,15 +327,6 @@ const mixer = k.add([
     scale(.2),
 	body({ isStatic: true}),
 	"mixer"
-]);
-
-const carrot = k.add([
-    sprite("carrot"),
-    pos(300, 300), // Starting position
-    area(),        // Enable collision area
-    body(),         // Enables physics
-    scale(.05),
-    "carrot"
 ]);
 
 const strawberry = k.add([
@@ -394,16 +386,6 @@ function updateInventorySlot(playerNum, index, itemImage) {
 }
 
 /* COLLISION EVENTS */
-
-player1.onCollide("carrot", () => {
-    addToInventory(1, "carrot");
-    carrot.destroy();
-});
-
-player2.onCollide("carrot", () => {
-    addToInventory(2, "carrot");
-    carrot.destroy();
-});
 
 player1.onCollide("strawberry", () => {
     addToInventory(1, "strawberry");
@@ -854,3 +836,60 @@ function takeFrostedCupcakesOut(player){
 		}
 	}
 }
+
+/* REGISTER INTERACTIONS */
+
+loadSprite("registerPinkGlow", "sprites/registerPinkGlow.png");
+loadSprite("registerBlueGlow", "sprites/registerBlueGlow.png");
+loadSprite("registerGreenGlow", "sprites/registerGreenGlow.png");
+loadSprite("registerBlackGlow", "sprites/registerBlackGlow.png");
+var registerGlow;
+var registerCollide = false;
+
+player1.onCollide("register", () => {
+	registerCollide = true;
+	if(registerGlow){
+		registerGlow.destroy();
+	}
+	registerGlow = k.add([
+		sprite("registerPinkGlow"),
+		pos(660, 3),
+		area(),
+		scale(.2),
+		body({ isStatic: true}),
+		"registerPinkGlow"
+	]);
+})
+
+k.onCollideEnd("player", "register", () => {
+	registerGlow.destroy();
+	registerCollide = false;
+});
+
+
+/* ORDER SYSTEM */
+
+const menu = ["cupcake-strawberry", "cupcake-chocolate", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot", "cupcake-apple"];
+
+const activeOrders = [];
+let ticketNumber = 0;
+
+function initiateOrder(){
+    ticketNumber = ticketNumber + 1;
+    menuItem = menu[ Math.floor(Math.random() * menu.length)];
+    const order = {
+        ticketNumber: ticketNumber,
+        menuItem: menuItem
+    };
+    activeOrders.push(order);
+}
+
+function completeOrder(menuItem) {
+    const orderIndex = activeOrders.findIndex(order => order.menuItem === menuItem);
+
+    if (orderIndex !== -1){
+        activeOrders.splice(orderIndex, 1)[0];
+    }
+}
+
+
