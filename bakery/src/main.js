@@ -48,6 +48,8 @@ loadSprite("frostingCounter", "sprites/frostingCounter.png");
 loadSprite("floor", "sprites/floor-wooden.png");
 loadSprite("displayCase", "sprites/displayCase.png");
 loadSprite("register", "sprites/register.png");
+loadSprite("shopDoor", "sprites/temp-door.png");
+loadSprite("shopDoorOnFocus", "sprites/temp-door-focus.png");
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -356,6 +358,14 @@ const eggs = k.add([
     "eggs"
 ]);
 
+const shopDoor = k.add([
+    sprite("shopDoor"),
+    pos(1000, 0),
+    area(),
+    body({ isStatic: true}),
+    scale(.15),
+    "shopDoor"
+])
 
 /* PLAYER INVENTORIES */
 const playerInventories = {
@@ -415,6 +425,38 @@ player1.onCollide("eggs", () => {
 player2.onCollide("eggs", () => {
     addToInventory(2, "eggs");
     eggs.destroy();
+});
+
+/* SHOP DOOR COLLISIONS */
+
+// display focus glow version of shop door on collide
+// add a function to activate shelf view here too?
+player1.onCollide("shopDoor", (shopDoorFocus) => {
+    shopDoorFocus = k.add([
+        sprite("shopDoorOnFocus"),
+        pos(1000, 0),
+        area(),
+        body({ isStatic: true}),
+        scale(.15),
+        "shopDoorOnFocus"
+    ])
+});
+player2.onCollide("shopDoor", (shopDoorFocus) => {
+    shopDoorFocus = k.add([
+        sprite("shopDoorOnFocus"),
+        pos(1000, 0),
+        area(),
+        body({ isStatic: true}),
+        scale(.15),
+        "shopDoorOnFocus"
+    ])
+});
+// end focus display after collision is over
+player1.onCollideEnd("shopDoorOnFocus", (shopDoorFocus) => {
+	shopDoorFocus.destroy();
+});
+player2.onCollideEnd("shopDoorOnFocus", (shopDoorFocus) => {
+	shopDoorFocus.destroy();
 });
 
 /* RECIPES */
