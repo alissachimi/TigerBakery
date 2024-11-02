@@ -34,10 +34,59 @@
       width: 100%; /* Full width */
       height: calc(100% - 30px); /* Full height minus header */
     }
+	header {
+            display: flex;
+            justify-content: space-between; /* Space out sections */
+            align-items: center; /* Center vertically */
+            padding-right: 20px;
+			padding-left: 20px;
+            background-color: #333; /* Dark background for header */
+            color: white; /* Text color */
+			height: 70px;
+        }
+        .section {
+            display: flex;
+            align-items: center;
+        }
+        .coins {
+            margin-right: 20px; /* Spacing between sections */
+        }
+        .order-tickets, .backpack {
+            margin-right: 20px;
+        }
+        .slot {
+            width: 30px; /* Width of each slot */
+            height: 30px; /* Height of each slot */
+            margin: 0 5px; /* Spacing between slots */
+            background-color: #555; /* Slot background */
+            border-radius: 5px; /* Rounded corners */
+            display: inline-block; /* Display as inline block */
+        }
   </style>
 </head>
 <body>
-  <div id="header">Header</div>
+	<header>
+        <div class="section coins">
+            <span>Coins: 100</span> <!-- Display coins -->
+        </div>
+        <div class="section order-tickets">
+            <span>Order Tickets:</span>
+            <div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+        </div>
+        <div class="section backpack">
+            <span>Backpack:</span>
+            <div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+        </div>
+    </header>
   <div class="centered">
   	<canvas id="mycanvas"></canvas>
 </div>
