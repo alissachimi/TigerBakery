@@ -423,7 +423,6 @@ const recipes = {
 	carrot : ["flour", "eggs", "carrot"],
 	strawberry : ["flour", "eggs", "strawberry"],
 	chocolate : ["flour", "eggs", "chocolate"],
-	apple : ["flour", "eggs", "apple"],
 	lemon : ["flour", "eggs", "lemon"],
 	blueberry : ["flour", "eggs", "blueberry"],
 }
@@ -844,21 +843,30 @@ loadSprite("registerBlueGlow", "sprites/registerBlueGlow.png");
 loadSprite("registerGreenGlow", "sprites/registerGreenGlow.png");
 loadSprite("registerBlackGlow", "sprites/registerBlackGlow.png");
 var registerGlow;
-var registerCollide = false;
+var canOrder;
 
 player1.onCollide("register", () => {
-	registerCollide = true;
+    canOrder = true;
 	if(registerGlow){
 		registerGlow.destroy();
 	}
 	registerGlow = k.add([
 		sprite("registerPinkGlow"),
-		pos(660, 3),
-		area(),
-		scale(.2),
+        pos(805, 330),
+        area(),
+		scale(.25),
 		body({ isStatic: true}),
 		"registerPinkGlow"
 	]);
+})
+
+player1.onCollideUpdate("register", () => {
+	onKeyPress(",", () => {
+        if (canOrder == true){
+            initiateOrder();
+            canOrder = false;
+        }
+	})
 })
 
 k.onCollideEnd("player", "register", () => {
@@ -869,27 +877,122 @@ k.onCollideEnd("player", "register", () => {
 
 /* ORDER SYSTEM */
 
-const menu = ["cupcake-strawberry", "cupcake-chocolate", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot", "cupcake-apple"];
+const menu = ["cupcake-strawberry", "cupcake-chocolate", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot"];
 
-const activeOrders = [];
-let ticketNumber = 0;
+const activeOrders = [null, null, null];
+
+let balance = 100; // Coins
 
 function initiateOrder(){
-    ticketNumber = ticketNumber + 1;
-    menuItem = menu[ Math.floor(Math.random() * menu.length)];
-    const order = {
-        ticketNumber: ticketNumber,
-        menuItem: menuItem
-    };
-    activeOrders.push(order);
-}
 
-function completeOrder(menuItem) {
-    const orderIndex = activeOrders.findIndex(order => order.menuItem === menuItem);
+    if (line.length > 0){
+        
+        const firstCustomer = line[0]; // First customer in line
+    
+        // Extract the ticket number and menu item from the first customer
+        const ticketNumber = firstCustomer.ticketNumber;
+        const menuItem = firstCustomer.menuItem;
+    
+        const index = activeOrders.findIndex(order => order === null);
+        
+        const order = {
+            ticketNumber: ticketNumber,
+            menuItem: menuItem,
+            index: index
+        };
+    
+        if (index !== -1) {
+            // Place the order in the first available slot
+            activeOrders[index] = order;
+            updateOrderSlot(index, menuItem);
+        }
 
-    if (orderIndex !== -1){
-        activeOrders.splice(orderIndex, 1)[0];
+        line.shift(); // Remove this customer from the line
     }
 }
 
+function updateOrderSlot(index, menuItem) {
+    // Construct the ID based on player number and index
+    const slotId = `order-${index}`;
+    const slotDiv = document.getElementById(slotId);
+
+    if (slotDiv) {
+        slotDiv.innerHTML = `<img src="sprites/${menuItem}.png" alt="Collected Item" style="width: 100%; height: auto;">`;
+    }
+}
+
+
+function completeOrder(ticketNumber) {
+    const orderIndex = activeOrders.findIndex(order => order.ticketNumber === ticketNumber);
+    if (orderIndex !== -1){
+        activeOrders.splice(orderIndex, 1)[0];
+    }
+    const slotId = `order-${orderIndex}`;
+    const slotDiv = document.getElementById(slotId);
+    if (slotDiv) {
+        slotDiv.innerHTML = `<img src="" alt="Collected Item" style="width: 100%; height: auto;">`;
+    }
+}
+
+function tipPlayer(){
+    balance += 100;
+    const balanceDiv = document.getElementById("balance");
+    balanceDiv.innerHTML = balance;
+}
+
+player1.onCollide("customer", (customer) => {
+    const ticketNumber = customer.ticketNumber;
+    const menuItem = customer.menuItem;
+
+    if (playerInventories.player1.includes(menuItem)){
+        completeOrder(ticketNumber);
+        customer.destroy();
+        tipPlayer();
+    }
+});
+
+/* CUSTOMERS */
+
+const line = [];
+const customerSprites = ["strawberry", "lemon", "chocolate"];
+
+function createCustomer(ticketNumber, menuItem) {
+    console.log("CUSTOMER GENERATED");
+    const randomSprite = customerSprites[Math.floor(Math.random() * customerSprites.length)];
+    const customer = k.add([
+        sprite(randomSprite), 
+        pos(785, 300),
+        area(),
+        body({ isStatic: false }),
+        "customer", 
+        scale(.05),
+        {
+            ticketNumber: ticketNumber,
+            menuItem: menuItem
+        }
+    ]);
+}
+
+function generateCustomers() {
+    // Create a counter for ticket numbers
+    let ticketNumber = 0;
+
+    // Set an interval to generate customers every 30 seconds
+    setInterval(() => {
+        if (line.length < 3) {
+
+            ticketNumber += 1;
+            const menuItem = menu[Math.floor(Math.random() * menu.length)];
+            createCustomer(ticketNumber, menuItem);
+            const customer = {
+                ticketNumber: ticketNumber,
+                menuItem: menuItem
+            };
+            line.push(customer);
+        }
+    }, 30000); // 30 seconds in milliseconds
+}
+
+// Start the customer generation process
+generateCustomers();
 
