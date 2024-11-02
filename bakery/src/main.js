@@ -375,6 +375,13 @@ function addToInventory(player, item) {
     }
 }
 
+// Function to remove an item from a player's inventory
+function removeFromInventory(player, index){
+    const inventory = playerInventories["player"+player];
+    inventory[index] = 'blank'; // Add the item to the first empty slot
+    updateInventorySlot(player, index, "sprites/blank.png");
+}
+
 function updateInventorySlot(playerNum, index, itemImage) {
     // Construct the ID based on player number and index
     const slotId = `slot-${playerNum}-${index}`;
@@ -1107,11 +1114,7 @@ function completeOrder(ticketNumber) {
     if (orderIndex !== -1){
         activeOrders.splice(orderIndex, 1)[0];
     }
-    const slotId = `order-${orderIndex}`;
-    const slotDiv = document.getElementById(slotId);
-    if (slotDiv) {
-        slotDiv.innerHTML = `<img src="" alt="Collected Item" style="width: 100%; height: auto;">`;
-    }
+    tipBakery();
 }
 
 function checkInventoryForCupcake(playerInventory, menuItem) {
@@ -1136,8 +1139,7 @@ player1.onCollide("customer", (customer) => {
     if (inventoryIndex != -1){
         completeOrder(ticketNumber);
         customer.destroy();
-        tipBakery();
-        addToInventory(1, "blank");
+        removeFromInventory(1, inventoryIndex);
     }
 });
 
@@ -1148,8 +1150,7 @@ player2.onCollide("customer", (customer) => {
     if (inventoryIndex != -1){
         completeOrder(ticketNumber);
         customer.destroy();
-        tipBakery();
-        addToInventory(2, "blank");
+        removeFromInventory(2, inventoryIndex);
     }
 });
 
@@ -1192,8 +1193,9 @@ function generateCustomers() {
             };
             line.push(customer);
         }
-    }, 5000); // 30 seconds in milliseconds
+    }, 5000); // 20 seconds in milliseconds
 }
+
 
 // Start the customer generation process
 generateCustomers();
