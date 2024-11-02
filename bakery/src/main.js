@@ -23,7 +23,7 @@ loadSprite("eggs", "sprites/eggs.png");
 loadSprite("flour", "sprites/flour.png");
 loadSprite("lemon", "sprites/lemon.png");
 loadSprite("strawberry", "sprites/strawberry.png");
-
+loadSprite("oven", "sprites/oven.png");
 
 /* CREATE PLAYERS */
 const player1 = k.add([
@@ -111,8 +111,6 @@ onKeyRelease("s", () => {
 
 ///////////////////////////////////////////////////// add interactable items
 
-// add oven
-loadSprite("oven", "sprites/oven.png");
 const oven = k.add([
     sprite("oven"),
     pos(100, 56), // Starting position
@@ -160,6 +158,25 @@ const carrot = k.add([
     "carrot"
 ]);
 
+const strawberry = k.add([
+    sprite("strawberry"),
+    pos(300, 300), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "strawberry"
+]);
+
+const flour = k.add([
+    sprite("flour"),
+    pos(300, 300), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "flour"
+]);
+
+
 /* PLAYER INVENTORIES */
 const playerInventories = {
     player1: [null, null, null], // Each slot initialized to null (empty)
@@ -175,8 +192,6 @@ function addToInventory(player, item) {
     if (index !== -1) {
         inventory[index] = item; // Add the item to the first empty slot
         updateInventorySlot(player, index, "sprites/"+item+".png");
-    } else {
-        console.log(`${player}'s inventory is full!`);
     }
 }
 
@@ -198,7 +213,26 @@ player1.onCollide("carrot", () => {
 });
 
 player2.onCollide("carrot", () => {
-    addToInventory(1, "carrot");
+    addToInventory(2, "carrot");
     carrot.destroy();
 });
 
+player1.onCollide("strawberry", () => {
+    addToInventory(1, "strawberry");
+    strawberry.destroy();
+});
+
+player2.onCollide("strawberry", () => {
+    addToInventory(2, "strawberry");
+    strawberry.destroy();
+});
+
+player1.onCollide("flour", () => {
+    addToInventory(1, "flour");
+    flour.destroy();
+});
+
+player2.onCollide("flour", () => {
+    addToInventory(2, "flour");
+    flour.destroy();
+});
