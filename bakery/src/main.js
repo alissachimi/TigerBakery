@@ -496,6 +496,62 @@ player1.onCollideUpdate("mixer", () => {
 	})
 })
 
+
+player2.onCollide("mixer", () => {
+	recipeTried = false;
+	inMixerCollide = true;
+	if(mixerGlow){
+		mixerGlow.destroy();
+	}
+	if(!mixerInUse){
+		mixerGlow = k.add([
+			sprite("mixerBlueGlow"),
+			pos(660, 3),
+			area(),
+			scale(.2),
+			body({ isStatic: true}),
+			"mixerBlueGlow"
+		]);
+	} else {
+		if(mixerTimer==null){
+			takeBatterOut(player1);
+		}
+	}
+})
+
+player2.onCollideUpdate("mixer", () => {
+	onKeyPress(",", () => {
+		if(inMixerCollide && !mixerInUse){
+			recipeToMake = checkInventoryForRecipe(playerInventories.player2);
+			if(mixerGlow && !recipeTried){
+				mixerGlow.destroy();
+			}
+	
+			if(recipeToMake!=null){
+	
+				playerInventories.player2 = [null, null, null]
+				addToInventory(2, "blank")
+				addToInventory(2, "blank")
+				addToInventory(2, "blank")
+				playerInventories.player2 = [null, null, null]
+				recipeInMixer = recipeToMake;
+				useMixer();
+
+			} else if (!recipeTried) {
+				mixerGlow = k.add([
+					sprite("mixerBlackGlow"),
+					pos(660, 3),
+					area(),
+					scale(.2),
+					body({ isStatic: true}),
+					"mixerBlackGlow"
+				]);
+			}
+			recipeTried = true;
+		}
+	})
+})
+
 k.onCollideEnd("player", "mixer", () => {
 	mixerGlow.destroy();
 	recipeTried = false;
@@ -647,6 +703,56 @@ player1.onCollideUpdate("oven", () => {
 	})
 })
 
+player2.onCollide("oven", () => {
+	batterTried = false;
+	inOvenCollide = true;
+	if(ovenGlow){
+		ovenGlow.destroy();
+	}
+	if(!ovenInUse){
+		ovenGlow = k.add([
+			sprite("ovenBlueGlow"),
+			pos(418, 38),
+			area(),
+			scale(.15),
+			body({ isStatic: true}),
+			"ovenBlueGlow"
+		]);
+	} else if(ovenTimer == null){
+		takeCupcakesOut(player2);
+	}
+	
+})
+
+player2.onCollideUpdate("oven", () => {
+	onKeyPress(",", () => {
+		if(inOvenCollide){
+			batterToCook = checkInventoryForBatter(playerInventories.player1);
+			if(ovenGlow && !batterTried){
+				ovenGlow.destroy();
+			}
+
+			if(batterToCook!=-1){
+				useOven();
+				updateInventorySlot(1, batterToCook, "sprites/blank.png")
+				batterTypeInOven = playerInventories.player2[batterToCook];
+				playerInventories.player2[batterToCook] = null
+
+			} else if (!batterTried) {
+				ovenGlow = k.add([
+					sprite("ovenBlackGlow"),
+					pos(418, 38),
+					area(),
+					scale(.15),
+					body({ isStatic: true}),
+					"ovenBlackGlow"
+				]);
+			}
+			batterTried = true;
+		}
+	})
+})
+
 k.onCollideEnd("player", "oven", () => {
 	ovenGlow.destroy();
 	batterTried = false;
@@ -774,6 +880,56 @@ player1.onCollideUpdate("frostingCounter", () => {
 	})
 })
 
+player2.onCollide("frostingCounter", () => {
+	frostingTried = false;
+	inFrostingCollide = true;
+	if(frostingCounterGlow){
+		frostingCounterGlow.destroy();
+	}
+	if(!frostingInUse){
+		frostingCounterGlow = k.add([
+			sprite("frostingCounterBlueGlow"),
+			pos(140, 1),
+			area(),
+			scale(.2),
+			body({ isStatic: true}),
+			"frostingCounterBlueGlow"
+		]);
+	} else if(frostingTimer == null){
+		takeFrostedCupcakesOut(player2);
+	}
+	
+})
+
+player2.onCollideUpdate("frostingCounter", () => {
+	onKeyPress(",", () => {
+		if(inFrostingCollide){
+			typeToFrost = checkInventoryForTin(playerInventories.player2);
+			if(frostingCounterGlow && !frostingTried){
+				frostingCounterGlow.destroy();
+			}
+
+			if(typeToFrost!=-1){
+				useFrosting();
+				updateInventorySlot(1, typeToFrost, "sprites/blank.png")
+				typeBeingFrosted = playerInventories.player2[typeToFrost];
+				playerInventories.player2[typeToFrost] = null;
+
+			} else if (!frostingTried) {
+				frostingCounterGlow = k.add([
+					sprite("frostingCounterBlackGlow"),
+					pos(140, 1),
+					area(),
+					scale(.2),
+					body({ isStatic: true}),
+					"frostingCounterBlackGlow"
+				]);
+			}
+			frostingTried = true;
+		}
+	})
+})
+
 k.onCollideEnd("player", "frostingCounter", () => {
 	frostingCounterGlow.destroy();
 	frostingTried = false;
@@ -861,6 +1017,30 @@ player1.onCollide("register", () => {
 })
 
 player1.onCollideUpdate("register", () => {
+	onKeyPress(",", () => {
+        if (canOrder == true){
+            initiateOrder();
+            canOrder = false;
+        }
+	})
+})
+
+player2.onCollide("register", () => {
+    canOrder = true;
+	if(registerGlow){
+		registerGlow.destroy();
+	}
+	registerGlow = k.add([
+		sprite("registerBlueGlow"),
+        pos(805, 330),
+        area(),
+		scale(.25),
+		body({ isStatic: true}),
+		"registerBlueGlow"
+	]);
+})
+
+player2.onCollideUpdate("register", () => {
 	onKeyPress(",", () => {
         if (canOrder == true){
             initiateOrder();
@@ -990,7 +1170,7 @@ function generateCustomers() {
             };
             line.push(customer);
         }
-    }, 30000); // 30 seconds in milliseconds
+    }, 5000); // 30 seconds in milliseconds
 }
 
 // Start the customer generation process
