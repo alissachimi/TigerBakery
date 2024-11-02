@@ -22,7 +22,17 @@ loadSprite("player1", "sprites/spritesheet1.png", {
 		idle:8
 	}
 });
-loadSprite("player2", "sprites/apple.png");
+loadSprite("player2", "sprites/spritesheet1.png", {
+	sliceX: 9,
+	sliceY: 1,
+	anims: {
+		runRight: { from: 0, to: 1 },
+		runLeft: { from: 2, to: 3 },
+		runDown: { from: 6, to: 7},
+		runUp: { from: 4, to: 5 },
+		idle:8
+	}
+});
 loadSprite("counter", "sprites/counter.png");
 loadSprite("mixer", "sprites/mixer.png");
 loadSprite("carrot", "sprites/carrot.png");
@@ -49,12 +59,15 @@ const player1 = k.add([
 ]);
 
 const player2 = k.add([
-    sprite("player2"),
+    sprite("player2",{
+		animSpeed: 1,
+		frame:8
+	}),
     pos(200, 200), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     "player",
-    scale(.05)
+    scale(.3)
 ]);
 
 let myInterval1;
@@ -88,6 +101,34 @@ function animateU1() {
 			player1.play("runUp");
 		}, intervalTime);
 	}
+
+	function animateR2() {
+		clearInterval(myInterval2)
+		myInterval2 = setInterval(() => {
+		player2.play("runRight");
+	}, intervalTime);
+	}
+	
+	function animateL2() {
+		clearInterval(myInterval2)
+		myInterval2 = setInterval(() => {
+			player2.play("runLeft");
+		}, intervalTime);
+		}
+	
+	function animateD2() {
+			clearInterval(myInterval2)
+			myInterval2 = setInterval(() => {
+				player2.play("runDown");
+			}, intervalTime);
+		}
+	
+	function animateU2() {
+			clearInterval(myInterval2)
+			myInterval2 = setInterval(() => {
+				player2.play("runUp");
+			}, intervalTime);
+		}
 
 //////////////////////////////////////////////////// player 1 movement
 
@@ -145,28 +186,28 @@ onKeyDown("a", () => {
     player2.move(-200, 0); // Move left
 });
 onKeyPress("a", () => {
-	animateL(player2, myInterval2)		
+	animateL2()		
 })
 
 onKeyDown("d", () => {
     player2.move(200, 0); // Move right
 });
 onKeyPress("d", () => {
-	animateR(player2, myInterval2)		
+	animateR2()		
 })
 
 onKeyDown("w", () => {
     player2.move(0, -200); // Move up
 });
 onKeyPress("w", () => {
-	animateU(player2, myInterval2)		
+	animateU2()		
 })
 
 onKeyDown("s", () => {
     player2.move(0, 200); // Move down
 });
 onKeyPress("s", () => {
-	animateD(player2, myInterval2)		
+	animateD2()		
 })
 
 // You can also add keyUp if you want to stop movement when keys are released
