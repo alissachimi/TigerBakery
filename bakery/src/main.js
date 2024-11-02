@@ -44,6 +44,8 @@ loadSprite("flour", "sprites/flour.png");
 loadSprite("lemon", "sprites/lemon.png");
 loadSprite("strawberry", "sprites/strawberry.png");
 loadSprite("oven", "sprites/oven.png");
+loadSprite("frostingCounter", "sprites/frostingCounter.png");
+
 
 /* CREATE PLAYERS */
 const player1 = k.add([
@@ -232,7 +234,7 @@ onKeyRelease("s", () => {
 
 const oven = k.add([
     sprite("oven"),
-    pos(138, 38), // Starting position
+    pos(418, 38), // Starting position
     area(),        // Enable collision area
     scale(.15),
 	body({ isStatic: true}),
@@ -248,7 +250,7 @@ k.add([
 ]);
 k.add([
     sprite("counter"),
-    pos(240, 0), // Starting position
+    pos(280, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
@@ -260,9 +262,17 @@ k.add([
     scale(.2),
 	body({ isStatic: true}),
 ]);
+const frostingCounter = k.add([
+    sprite("frostingCounter"),
+    pos(140, 1), // Starting position
+    area(),        // Enable collision area
+    scale(.2),
+	body({ isStatic: true}),
+	"frostingCounter"
+]);
 const mixer = k.add([
     sprite("mixer"),
-    pos(380, 1), // Starting position
+    pos(660, 3), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
@@ -410,7 +420,7 @@ player1.onCollide("mixer", () => {
 	if(!mixerInUse){
 		mixerGlow = k.add([
 			sprite("mixerPinkGlow"),
-			pos(380, 1),
+			pos(660, 3),
 			area(),
 			scale(.2),
 			body({ isStatic: true}),
@@ -444,7 +454,7 @@ player1.onCollideUpdate("mixer", () => {
 			} else if (!recipeTried) {
 				mixerGlow = k.add([
 					sprite("mixerBlackGlow"),
-					pos(380, 1),
+					pos(660, 3),
 					area(),
 					scale(.2),
 					body({ isStatic: true}),
@@ -466,7 +476,7 @@ function useMixer(){
 	mixerInUse = true;
 	mixerTimer = k.add([
 		sprite("mixerTimer"),
-		pos(380, 1),
+		pos(660, 3),
 		area(),
 		scale(.2),
 		body({ isStatic: true}),
@@ -481,7 +491,7 @@ function useMixer(){
 	    }
 	    mixerGlow = k.add([
 	        sprite("mixerGreenGlow"),
-	        pos(380, 1),
+	        pos(660, 3),
 	        area(),
 	        scale(.2),
 	        body({ isStatic: true}),
@@ -549,25 +559,33 @@ loadSprite("ovenPinkGlow", "sprites/ovenPinkGlow.png");
 loadSprite("ovenBlueGlow", "sprites/ovenBlueGlow.png");
 loadSprite("ovenGreenGlow", "sprites/ovenGreenGlow.png");
 loadSprite("ovenBlackGlow", "sprites/ovenBlackGlow.png");
+loadSprite("ovenTimer", "sprites/ovenTimer.png");
 var ovenGlow;
 let batterTried = true;
 let batterTypeInOven;
 let inOvenCollide = false;
+let ovenInUse = false;
+var ovenTimer = null;
 
 player1.onCollide("oven", () => {
-	recipeTried = false;
+	batterTried = false;
 	inOvenCollide = true;
 	if(ovenGlow){
 		ovenGlow.destroy();
 	}
-	ovenGlow = k.add([
-		sprite("ovenPinkGlow"),
-		pos(138, 38),
-		area(),
-		scale(.15),
-		body({ isStatic: true}),
-		"ovenPinkGlow"
-	]);
+	if(!ovenInUse){
+		ovenGlow = k.add([
+			sprite("ovenPinkGlow"),
+			pos(418, 38),
+			area(),
+			scale(.15),
+			body({ isStatic: true}),
+			"ovenPinkGlow"
+		]);
+	} else if(ovenTimer == null){
+		takeCupcakesOut(player1);
+	}
+	
 })
 
 player1.onCollideUpdate("oven", () => {
@@ -579,14 +597,7 @@ player1.onCollideUpdate("oven", () => {
 			}
 
 			if(batterToCook!=-1){
-				ovenGlow = k.add([
-					sprite("ovenBlueGlow"),
-					pos(138, 38),
-					area(),
-					scale(.15),
-					body({ isStatic: true}),
-					"ovenBlueGlow"
-				]);
+				useOven();
 				updateInventorySlot(1, batterToCook, "sprites/blank.png")
 				batterTypeInOven = playerInventories.player1[batterToCook];
 				playerInventories.player1[batterToCook] = null
@@ -594,7 +605,7 @@ player1.onCollideUpdate("oven", () => {
 			} else if (!batterTried) {
 				ovenGlow = k.add([
 					sprite("ovenBlackGlow"),
-					pos(138, 38),
+					pos(418, 38),
 					area(),
 					scale(.15),
 					body({ isStatic: true}),
@@ -612,6 +623,35 @@ k.onCollideEnd("player", "oven", () => {
 	inOvenCollide = false;
 });
 
+function useOven(){
+	ovenInUse = true;
+	ovenTimer = k.add([
+		sprite("ovenTimer"),
+		pos(418, 38),
+		area(),
+		scale(.15),
+		body({ isStatic: true}),
+		"ovenTimer"
+	]);
+
+	fadeOut(ovenTimer, 10);
+
+	k.wait(10, () => {
+	    if (ovenGlow) {
+	        ovenGlow.destroy();
+	    }
+	    ovenGlow = k.add([
+	        sprite("ovenGreenGlow"),
+	        pos(418, 38),
+	        area(),
+	        scale(.15),
+	        body({ isStatic: true}),
+	        "ovenGreenGlow"
+	    ]);
+		ovenTimer = null;
+	});
+}
+
 // Function to check if a player's inventory has any batter 
 function checkInventoryForBatter(playerInventory) {
     for (let i = 0; i < playerInventory.length; i++) {
@@ -621,4 +661,147 @@ function checkInventoryForBatter(playerInventory) {
         }
     }
     return -1; // return -1 if no element contains "Batter"
+}
+
+function takeCupcakesOut(player){
+	// only if they have an open spot for the mix to go
+	if((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
+		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))){
+		
+		ovenGlow.destroy();
+		ovenInUse = false;
+
+		if(player == player1){
+			addToInventory(1, batterTypeInOven + "CupcakeTin")
+		} else {
+			addToInventory(2, batterTypeInOven + "CupcakeTin")
+		}
+	}
+}
+
+/* FROSTING INTERACTIONS */
+
+loadSprite("frostingCounterPinkGlow", "sprites/frostingCounterPinkGlow.png");
+loadSprite("frostingCounterBlueGlow", "sprites/frostingCounterBlueGlow.png");
+loadSprite("frostingCounterGreenGlow", "sprites/frostingCounterGreenGlow.png");
+loadSprite("frostingCounterBlackGlow", "sprites/frostingCounterBlackGlow.png");
+loadSprite("frostingTimer", "sprites/mixerTimer.png");
+var frostingCounterGlow;
+var typeToFrost;
+var typeBeingFrosted;
+let inFrostingCollide = false;
+let frostingInUse = false;
+var frostingTimer = null;
+let frostingTried = true;
+
+player1.onCollide("frostingCounter", () => {
+	frostingTried = false;
+	inFrostingCollide = true;
+	if(frostingCounterGlow){
+		frostingCounterGlow.destroy();
+	}
+	if(!frostingInUse){
+		frostingCounterGlow = k.add([
+			sprite("frostingCounterPinkGlow"),
+			pos(140, 1),
+			area(),
+			scale(.2),
+			body({ isStatic: true}),
+			"frostingCounterPinkGlow"
+		]);
+	} else if(frostingTimer == null){
+		takeFrostedCupcakesOut(player1);
+	}
+	
+})
+
+player1.onCollideUpdate("frostingCounter", () => {
+	onKeyPress(",", () => {
+		if(inFrostingCollide){
+			typeToFrost = checkInventoryForTin(playerInventories.player1);
+			if(frostingCounterGlow && !frostingTried){
+				frostingCounterGlow.destroy();
+			}
+
+			if(typeToFrost!=-1){
+				useFrosting();
+				updateInventorySlot(1, typeToFrost, "sprites/blank.png")
+				typeBeingFrosted = playerInventories.player1[typeToFrost];
+				playerInventories.player1[typeToFrost] = null;
+
+			} else if (!frostingTried) {
+				frostingCounterGlow = k.add([
+					sprite("frostingCounterBlackGlow"),
+					pos(140, 1),
+					area(),
+					scale(.2),
+					body({ isStatic: true}),
+					"frostingCounterBlackGlow"
+				]);
+			}
+			frostingTried = true;
+		}
+	})
+})
+
+k.onCollideEnd("player", "frostingCounter", () => {
+	frostingCounterGlow.destroy();
+	frostingTried = false;
+	inFrostingCollide = false;
+});
+
+function useFrosting(){
+	frostingInUse = true;
+	frostingTimer = k.add([
+		sprite("frostingTimer"),
+		pos(140, 1),
+		area(),
+		scale(.2),
+		body({ isStatic: true}),
+		"frostingTimer"
+	]);
+
+	fadeOut(frostingTimer, 10);
+
+	k.wait(10, () => {
+	    if (frostingCounterGlow) {
+	        frostingCounterGlow.destroy();
+	    }
+	    frostingCounterGlow = k.add([
+	        sprite("frostingCounterGreenGlow"),
+	        pos(140, 1),
+	        area(),
+	        scale(.2),
+	        body({ isStatic: true}),
+	        "frostingCounterGreenGlow"
+	    ]);
+		frostingTimer = null;
+	});
+}
+
+// Function to check if a player's inventory has any batter 
+function checkInventoryForTin(playerInventory) {
+    for (let i = 0; i < playerInventory.length; i++) {
+        if (playerInventory[i]!=null && playerInventory[i].includes("CupcakeTin")) {
+            playerInventory[i] = playerInventory[i].substring(0, playerInventory[i].length - "CupcakeTin".length);
+            return i;
+        }
+    }
+    return -1; // return -1 if no element contains "Batter"
+}
+
+function takeFrostedCupcakesOut(player){
+	// only if they have an open spot for the mix to go
+	if((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
+		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))){
+		
+		frostingCounterGlow.destroy();
+		frostingInUse = false;
+
+		if(player == player1){
+			addToInventory(1, typeBeingFrosted + "TinFrosted")
+		} else {
+			addToInventory(2, typeBeingFrosted + "TinFrosted")
+		}
+	}
 }
