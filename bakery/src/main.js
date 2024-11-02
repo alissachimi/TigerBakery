@@ -232,40 +232,41 @@ onKeyRelease("s", () => {
 
 const oven = k.add([
     sprite("oven"),
-    pos(100, 56), // Starting position
+    pos(138, 38), // Starting position
     area(),        // Enable collision area
-    body({isStatic: true}),         // Enables physics
-    "player",
-    scale(.15)
+    scale(.15),
+	body({ isStatic: true}),
+	"oven"
 ]);
 
 k.add([
     sprite("counter"),
-    pos(40, 0), // Starting position
+    pos(0, 0), // Starting position
     area(),        // Enable collision area
-    body({isStatic: true}),         // Enables physics
-    scale(.2)
+    scale(.2),
+	body({ isStatic: true}),
 ]);
 k.add([
     sprite("counter"),
     pos(240, 0), // Starting position
     area(),        // Enable collision area
-    body({isStatic: true}),         // Enables physics
-    scale(.2)
+    scale(.2),
+	body({ isStatic: true}),
 ]);
 k.add([
     sprite("counter"),
-    pos(523, 1), // Starting position
+    pos(520, 2), // Starting position
     area(),        // Enable collision area
-    body({isStatic: true}),         // Enables physics
-    scale(.2)
+    scale(.2),
+	body({ isStatic: true}),
 ]);
-k.add([
+const mixer = k.add([
     sprite("mixer"),
-    pos(383, 1), // Starting position
+    pos(380, 1), // Starting position
     area(),        // Enable collision area
-    body({isStatic: true}),         // Enables physics
-    scale(.2)
+    scale(.2),
+	body({ isStatic: true}),
+	"mixer"
 ]);
 
 const carrot = k.add([
@@ -293,6 +294,15 @@ const flour = k.add([
     body(),         // Enables physics
     scale(.05),
     "flour"
+]);
+
+const eggs = k.add([
+    sprite("eggs"),
+    pos(400, 400), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "eggs"
 ]);
 
 
@@ -355,3 +365,62 @@ player2.onCollide("flour", () => {
     addToInventory(2, "flour");
     flour.destroy();
 });
+
+player1.onCollide("eggs", () => {
+    addToInventory(1, "eggs");
+    eggs.destroy();
+});
+
+player2.onCollide("eggs", () => {
+    addToInventory(2, "eggs");
+    eggs.destroy();
+});
+
+/* RECIPES */
+
+const recipes = {
+	carrot : ["flour", "eggs", "carrot"],
+	strawberry : ["flour", "eggs", "strawberry"],
+	chocolate : ["flour", "eggs", "chocolate"],
+	apple : ["flour", "eggs", "apple"],
+	lemon : ["flour", "eggs", "lemon"],
+	blueberry : ["flour", "eggs", "blueberry"],
+}
+
+/* MIXER INTERACTIONS */
+
+player1.onCollide("mixer", () => {
+	recipeToMake = checkInventoryForRecipe(playerInventories.player1);
+	if(recipeToMake!=null){
+		playerInventories.player1 = [null, null, null]
+		addToInventory(1, "blank")
+		addToInventory(1, "blank")
+		addToInventory(1, "blank")
+		playerInventories.player1 = [null, null, null]
+
+		addToInventory(1, recipeToMake + "Batter")
+		
+	}
+	
+})
+
+// Function to check if a player's inventory matches any recipe
+function checkInventoryForRecipe(playerInventory) {
+    for (const [recipeName, recipeIngredients] of Object.entries(recipes)) {
+        if (arraysEqual(playerInventory, recipeIngredients)) {
+            return recipeName;
+        }
+    }
+    return null;
+}
+
+// Helper function to compare two arrays (ignoring order)
+function arraysEqual(arr1, arr2) {
+    if (arr1.length !== arr2.length) return false;
+    let sortedArr1 = arr1.slice().sort();
+    let sortedArr2 = arr2.slice().sort();
+    for (let i = 0; i < sortedArr1.length; i++) {
+        if (sortedArr1[i] !== sortedArr2[i]) return false;
+    }
+    return true;
+}
