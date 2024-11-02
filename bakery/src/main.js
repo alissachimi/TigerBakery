@@ -514,7 +514,7 @@ player2.onCollide("mixer", () => {
 		]);
 	} else {
 		if(mixerTimer==null){
-			takeBatterOut(player1);
+			takeBatterOut(player2);
 		}
 	}
 })
@@ -727,7 +727,7 @@ player2.onCollide("oven", () => {
 player2.onCollideUpdate("oven", () => {
 	onKeyPress(",", () => {
 		if(inOvenCollide){
-			batterToCook = checkInventoryForBatter(playerInventories.player1);
+			batterToCook = checkInventoryForBatter(playerInventories.player2);
 			if(ovenGlow && !batterTried){
 				ovenGlow.destroy();
 			}
@@ -1114,7 +1114,16 @@ function completeOrder(ticketNumber) {
     }
 }
 
-function tipPlayer(){
+function checkInventoryForCupcake(playerInventory, menuItem) {
+    for (let i = 0; i < playerInventory.length; i++) {
+        if (playerInventory[i]!=null && playerInventory[i].includes(menuItem)) { // use includes instead of contains
+            return i;
+        }
+    }
+    return -1; // return -1 if no element contains "Batter"
+}
+
+function tipBakery(){
     balance += 100;
     const balanceDiv = document.getElementById("balance");
     balanceDiv.innerHTML = balance;
@@ -1123,11 +1132,24 @@ function tipPlayer(){
 player1.onCollide("customer", (customer) => {
     const ticketNumber = customer.ticketNumber;
     const menuItem = customer.menuItem;
-
-    if (playerInventories.player1.includes(menuItem)){
+    const inventoryIndex = checkInventoryForCupcake(playerInventories.player1, menuItem);
+    if (inventoryIndex != -1){
         completeOrder(ticketNumber);
         customer.destroy();
-        tipPlayer();
+        tipBakery();
+        addToInventory(1, "blank");
+    }
+});
+
+player2.onCollide("customer", (customer) => {
+    const ticketNumber = customer.ticketNumber;
+    const menuItem = customer.menuItem;
+    const inventoryIndex = checkInventoryForCupcake(playerInventories.player2, menuItem);
+    if (inventoryIndex != -1){
+        completeOrder(ticketNumber);
+        customer.destroy();
+        tipBakery();
+        addToInventory(2, "blank");
     }
 });
 
