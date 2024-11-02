@@ -45,7 +45,17 @@ loadSprite("lemon", "sprites/lemon.png");
 loadSprite("strawberry", "sprites/strawberry.png");
 loadSprite("oven", "sprites/oven.png");
 loadSprite("frostingCounter", "sprites/frostingCounter.png");
+loadSprite("floor", "sprites/floor-wooden.png");
 
+/* ADD FLOOR */
+// note: MUST add floor before people otherwise it will cover them!!!
+const floor = k.add([
+    sprite("floor"),
+    pos(0, 60), // 
+    scale(.6),
+    // body({ isStatic: true }),
+    "floor"
+]);
 
 /* CREATE PLAYERS */
 const player1 = k.add([
