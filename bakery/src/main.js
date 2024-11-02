@@ -892,4 +892,49 @@ function completeOrder(menuItem) {
     }
 }
 
+// function to empty a user's inventory (all items)
+function clearAllInventory(playerNum, playerInventories){
+    // set all inventory slots to NULL (clear values)
+    playerInventories.playerNum = [null, null, null]
 
+    // remove all images in inventory display
+    for (let i=0; i < playerInventories.playerNum.length; i++){
+        addToInventory(playerNum, "blank")
+    }
+}
+
+// get the current inventory slot
+// function getIndexSlot(playerNum, playerInventories){
+//     // TBD
+// }
+
+// clear the index of the specified slot
+// use my own variation of addToInventory, remove from specified slot instead of the first empty one
+// function clearInventorySlot(slotIndex, playerNum, playerInventories){
+//     // will return to this if we have time
+// }
+
+/* SHOP CLOSET */
+const shelf_items = [
+    "flour",
+    "eggs",
+    "strawberry",
+    "lemon",
+    "blueberry",
+    "carrot",
+    "chocolate",
+    "trashcan"
+];
+
+// function to navigate shelf items
+function navigate_shelf(playerNum){
+    // determine if p1 or p2
+    if (playerNum == 1){
+        // next item key = "ctrl"
+        // action key = ","
+    }
+    if (playerNum == 2){
+        // next item key = "capslock"
+        // action key = "shift"
+    }
+}
