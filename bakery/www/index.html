@@ -1,9 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>bakery</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bakery</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden; /* Prevents scrolling */
+    }
+
+    #header {
+      height: 70px;
+      background-color: #333; /* Dark background color */
+      color: white; /* White text color */
+      text-align: center; /* Center text */
+      line-height: 30px; /* Vertically center text */
+    }
+
+	.centered {
+		display: flex;
+		justify-content: center; /* Center horizontally */
+		align-items: center; /* Center vertically */
+		height: 100%; /* Full height of the viewport */
+    }
+
+	canvas {
+      display: block; /* Removes extra space below canvas */
+      position: absolute; /* Position canvas relative to body */
+      top: 70px; /* Start below the header */
+      width: 100%; /* Full width */
+      height: calc(100% - 30px); /* Full height minus header */
+    }
+  </style>
 </head>
 <body>
-	<script src="main.js"></script>
+  <div id="header">Header</div>
+  <div class="centered">
+  	<canvas id="mycanvas"></canvas>
+</div>
+  <script src="main.js"></script>
 </body>
 </html>
