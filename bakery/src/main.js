@@ -5,7 +5,7 @@ const k =  kaboom({
     height: 600,
     font: "sans-serif",
     canvas: document.querySelector("#mycanvas"),
-    background: [ 144, 143, 97, ],
+    background: [ 144, 143, 97, ]
 })
 
 ///////////////////////////////////////////////////////////////////////////// basic player functionality
@@ -22,7 +22,7 @@ loadSprite("player1", "sprites/spritesheet1.png", {
 		idle:8
 	}
 });
-loadSprite("player2", "sprites/spritesheet1.png", {
+loadSprite("player2", "sprites/spritesheet2.png", {
 	sliceX: 9,
 	sliceY: 1,
 	anims: {
@@ -995,4 +995,49 @@ function generateCustomers() {
 
 // Start the customer generation process
 generateCustomers();
+// function to empty a user's inventory (all items)
+function clearAllInventory(playerNum, playerInventories){
+    // set all inventory slots to NULL (clear values)
+    playerInventories.playerNum = [null, null, null]
 
+    // remove all images in inventory display
+    for (let i=0; i < playerInventories.playerNum.length; i++){
+        addToInventory(playerNum, "blank")
+    }
+}
+
+// get the current inventory slot
+// function getIndexSlot(playerNum, playerInventories){
+//     // TBD
+// }
+
+// clear the index of the specified slot
+// use my own variation of addToInventory, remove from specified slot instead of the first empty one
+// function clearInventorySlot(slotIndex, playerNum, playerInventories){
+//     // will return to this if we have time
+// }
+
+/* SHOP CLOSET */
+const shelf_items = [
+    "flour",
+    "eggs",
+    "strawberry",
+    "lemon",
+    "blueberry",
+    "carrot",
+    "chocolate",
+    "trashcan"
+];
+
+// function to navigate shelf items
+function navigate_shelf(playerNum){
+    // determine if p1 or p2
+    if (playerNum == 1){
+        // next item key = "ctrl"
+        // action key = ","
+    }
+    if (playerNum == 2){
+        // next item key = "capslock"
+        // action key = "shift"
+    }
+}
