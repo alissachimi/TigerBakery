@@ -848,9 +848,9 @@ function takeFrostedCupcakesOut(player){
 		frostingInUse = false;
 
 		if(player == player1){
-			addToInventory(1, typeBeingFrosted + "TinFrosted")
+			addToInventory(1, "cupcake-" + typeBeingFrosted)
 		} else {
-			addToInventory(2, typeBeingFrosted + "TinFrosted")
+			addToInventory(2, "cupcake-" + typeBeingFrosted)
 		}
 	}
 }
