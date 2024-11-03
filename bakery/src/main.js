@@ -93,7 +93,7 @@ const ingredientShelf2 = k.add([
     pos(0,240),
     scale(.2),
     "ingredientShelf2"
-])
+]);
 
 /* CREATE PLAYERS */
 const player1 = k.add([
@@ -297,20 +297,28 @@ const oven2 = k.add([
 	"oven2"
 ]);
 
-k.add([
+const counter1 = k.add([
     sprite("counter"),
     pos(280, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
 ]);
-k.add([
+const counter2 = k.add([
     sprite("counter"),
     pos(612, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
 ]);
+const counter3 = k.add([
+    sprite("counter"),
+    pos(800, 600), // Starting position
+    area(),        // Enable collision area
+    scale(.2),
+	body({ isStatic: true}),
+]);
+
 k.add([
     sprite("displayCase"),
     pos(165, 330), // Starting position
@@ -373,33 +381,53 @@ const mixerBlue = k.add([
 	body({ isStatic: true}),
 	"mixerBlue"
 ]);
-const strawberry = k.add([
-    sprite("strawberry"),
-    pos(300, 300), // Starting position
-    area(),        // Enable collision area
-    body(),         // Enables physics
-    scale(.05),
-    "strawberry"
-]);
 
 const flour = k.add([
     sprite("flour"),
-    pos(300, 300), // Starting position
+    pos(15, 60), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     scale(.05),
     "flour"
 ]);
-
 const eggs = k.add([
     sprite("eggs"),
-    pos(400, 400), // Starting position
+    pos(15, 120), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     scale(.05),
     "eggs"
 ]);
-
+const strawberry = k.add([
+    sprite("strawberry"),
+    pos(15, 180), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "strawberry"
+]);
+const lemon = k.add([
+    sprite("lemon"),
+    pos(15, 240), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "lemon"
+]);
+const blueberry = k.add([
+    sprite("blueberry"),
+    pos(15, 300),
+    area(),
+    scale(.05),
+    "blueberry"
+]);
+const carrot = k.add([
+    sprite("carrot"),
+    pos(15, 360),
+    area(),
+    scale(.05),
+    "carrot"
+]);
 
 /* PLAYER INVENTORIES */
 const playerInventories = {
@@ -1379,7 +1407,7 @@ player1.onCollide("register", () => {
 	}
 	registerGlow = k.add([
 		sprite("registerPinkGlow"),
-        pos(950, 330),
+        pos(970, 335),
         area(),
 		scale(.25),
 		body({ isStatic: true}),
@@ -1403,7 +1431,7 @@ player2.onCollide("register", () => {
 	}
 	registerGlow = k.add([
 		sprite("registerBlueGlow"),
-        pos(950, 330),
+        pos(970, 335),
         area(),
 		scale(.25),
 		body({ isStatic: true}),
@@ -1455,7 +1483,18 @@ function initiateOrder(){
         if (index !== -1) {
             // Place the order in the first available slot
             activeOrders[index] = order;
+			if(registerGlow){
+				registerGlow.destroy();
+			}
             updateOrderSlot(index, menuItem);
+			registerGlow = k.add([
+				sprite("registerGreenGlow"),
+				pos(970, 335),
+				area(),
+				scale(.25),
+				body({ isStatic: true}),
+				"registerGreenGlow"
+			]);
         }
 
         line.shift(); // Remove this customer from the line
@@ -1466,7 +1505,20 @@ function initiateOrder(){
 		customer_line.shift();
 
         moveCustomerUp();
-    }
+    } else {
+		if(registerGlow){
+			registerGlow.destroy();
+		}
+		registerGlow = k.add([
+			sprite("registerBlackGlow"),
+			pos(970, 335),
+			area(),
+			scale(.25),
+			body({ isStatic: true}),
+			"registerBlackGlow"
+		]);
+	}
+	
 }
 
 function updateOrderSlot(index, menuItem) {
