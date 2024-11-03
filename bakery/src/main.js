@@ -102,7 +102,14 @@ const ingredientShelf2 = k.add([
 ]);
 const ingredientShelf3 = k.add([
     sprite("ingredientShelf"),
-    pos(0,240),
+    pos(0,360),
+    scale(.2),
+    "ingredientShelf3"
+]);
+
+const ingredientShelf4 = k.add([
+    sprite("ingredientShelf"),
+    pos(0,540),
     scale(.2),
     "ingredientShelf3"
 ]);
@@ -402,48 +409,65 @@ const mixerBlue = k.add([
 	"mixerBlue"
 ]);
 
+const itemSpacing = 85; // Adjust this value to increase or decrease the spacing between items
+const startY = 30;      // Starting Y position for the first item
+
 const flour = k.add([
     sprite("flour"),
-    pos(15, 30), // Starting position
-    area(),        // Enable collision area
-    scale(.035),
+    pos(15, startY),
+    area(),
+    scale(0.035),
     "flour"
 ]);
+
 const eggs = k.add([
     sprite("eggs"),
-    pos(15, 100), // Starting position
-    area(),        // Enable collision area
-    scale(.035),
+    pos(15, startY + itemSpacing * 1), // Position based on spacing
+    area(),
+    scale(0.035),
     "eggs"
 ]);
+
 const strawberry = k.add([
     sprite("strawberry"),
-    pos(15, 170), // Starting position
-    area(),        // Enable collision area
-    scale(.035),
+    pos(15, startY + itemSpacing * 2),
+    area(),
+    scale(0.035),
     "strawberry"
 ]);
+
 const lemon = k.add([
     sprite("lemon"),
-    pos(15, 240), // Starting position
-    area(),        // Enable collision area
-    scale(.035),
+    pos(15, startY + itemSpacing * 3),
+    area(),
+    scale(0.035),
     "lemon"
 ]);
+
 const blueberry = k.add([
     sprite("blueberry"),
-    pos(15, 310),
+    pos(15, startY + itemSpacing * 4),
     area(),
-    scale(.035),
+    scale(0.035),
     "blueberry"
 ]);
+
 const carrot = k.add([
     sprite("carrot"),
-    pos(15, 380),
+    pos(15, startY + itemSpacing * 5), // Last item position
     area(),
-    scale(.035),
+    scale(0.035),
     "carrot"
 ]);
+
+const chocolate = k.add([
+    sprite("chocolate"),
+    pos(15, startY + itemSpacing * 6), // Same position as carrot or adjust as needed
+    area(),
+    scale(0.035),
+    "chocolate"
+]);
+
 
 /* PLAYER INVENTORIES */
 const playerInventories = {
@@ -482,16 +506,14 @@ function updateInventorySlot(playerNum, index, itemImage) {
 
 /* COLLISION EVENTS */
 // player 1
-// player 1
-
 let inFlour1 = false;
 let gotFlour1 = false;
 
 player1.onCollide("flour", () => {
-	inFlour1 = true;
+    inFlour1 = true;
     var focusP1 = k.add([
         sprite("fruitPinkGlow"),
-        pos(15, 30),
+        pos(15, startY),
         area(),
         scale(.04),
         "fruitPinkGlow"
@@ -500,10 +522,10 @@ player1.onCollide("flour", () => {
 
 player1.onCollideUpdate("flour", () => {
     onKeyPress(",", () => {
-		if(inFlour1 && !gotFlour1){
-			addToInventory(1, "flour");
-			gotFlour1 = true;
-		}
+        if (inFlour1 && !gotFlour1) {
+            addToInventory(1, "flour");
+            gotFlour1 = true;
+        }
     });
 });
 
@@ -511,10 +533,10 @@ let inEgg1 = false;
 let gotEgg1 = false;
 
 player1.onCollide("eggs", () => {
-	inEgg1 = true;
+    inEgg1 = true;
     var focusP1 = k.add([
         sprite("fruitPinkGlow"),
-        pos(15, 100),
+        pos(15, startY + itemSpacing),
         area(),
         scale(.04),
         "fruitPinkGlow"
@@ -523,10 +545,10 @@ player1.onCollide("eggs", () => {
 
 player1.onCollideUpdate("eggs", () => {
     onKeyPress(",", () => {
-		if(inEgg1 && !gotEgg1){
-			addToInventory(1, "eggs");
-			gotEgg1 = true;
-		}
+        if (inEgg1 && !gotEgg1) {
+            addToInventory(1, "eggs");
+            gotEgg1 = true;
+        }
     });
 });
 
@@ -534,10 +556,10 @@ let inStrawberry1 = false;
 let gotStrawberry1 = false;
 
 player1.onCollide("strawberry", () => {
-	inStrawberry1 = true;
+    inStrawberry1 = true;
     var focusP1 = k.add([
         sprite("fruitPinkGlow"),
-        pos(15, 170),
+        pos(15, startY + itemSpacing*2),
         area(),
         scale(.04),
         "fruitPinkGlow"
@@ -546,10 +568,10 @@ player1.onCollide("strawberry", () => {
 
 player1.onCollideUpdate("strawberry", () => {
     onKeyPress(",", () => {
-		if(inStrawberry1 && !gotStrawberry1){
-			addToInventory(1, "strawberry");
-			gotStrawberry1 = true;
-		}
+        if (inStrawberry1 && !gotStrawberry1) {
+            addToInventory(1, "strawberry");
+            gotStrawberry1 = true;
+        }
     });
 });
 
@@ -557,10 +579,10 @@ let inLemon1 = false;
 let gotLemon1 = false;
 
 player1.onCollide("lemon", () => {
-	inLemon1 = true;
+    inLemon1 = true;
     var focusP1 = k.add([
         sprite("fruitPinkGlow"),
-        pos(15, 240),
+        pos(15, startY + itemSpacing*3),
         area(),
         scale(.04),
         "fruitPinkGlow"
@@ -569,10 +591,10 @@ player1.onCollide("lemon", () => {
 
 player1.onCollideUpdate("lemon", () => {
     onKeyPress(",", () => {
-		if(inLemon1 && !gotLemon1){
-			addToInventory(1, "lemon");
-			gotLemon1 = true;
-		}
+        if (inLemon1 && !gotLemon1) {
+            addToInventory(1, "lemon");
+            gotLemon1 = true;
+        }
     });
 });
 
@@ -580,10 +602,10 @@ let inBlueberry1 = false;
 let gotBlueberry1 = false;
 
 player1.onCollide("blueberry", () => {
-	inBlueberry1 = true;
+    inBlueberry1 = true;
     var focusP1 = k.add([
         sprite("fruitPinkGlow"),
-        pos(15, 310),
+        pos(15, startY + itemSpacing*4),
         area(),
         scale(.04),
         "fruitPinkGlow"
@@ -592,10 +614,10 @@ player1.onCollide("blueberry", () => {
 
 player1.onCollideUpdate("blueberry", () => {
     onKeyPress(",", () => {
-		if(inBlueberry1 && !gotBlueberry1){
-			addToInventory(1, "blueberry");
-			gotBlueberry1 = true;
-		}
+        if (inBlueberry1 && !gotBlueberry1) {
+            addToInventory(1, "blueberry");
+            gotBlueberry1 = true;
+        }
     });
 });
 
@@ -603,10 +625,10 @@ let inCarrot1 = false;
 let gotCarrot1 = false;
 
 player1.onCollide("carrot", () => {
-	inCarrot1 = true;
+    inCarrot1 = true;
     var focusP1 = k.add([
         sprite("fruitPinkGlow"),
-        pos(15, 380),
+        pos(15, startY + itemSpacing*5),
         area(),
         scale(.04),
         "fruitPinkGlow"
@@ -615,73 +637,98 @@ player1.onCollide("carrot", () => {
 
 player1.onCollideUpdate("carrot", () => {
     onKeyPress(",", () => {
-		if(inCarrot1 && !gotCarrot1){
-			addToInventory(1, "carrot");
-			gotCarrot1 = true;
-		}
+        if (inCarrot1 && !gotCarrot1) {
+            addToInventory(1, "carrot");
+            gotCarrot1 = true;
+        }
     });
 });
 
-// end focus display after collision is over for player 1
+let inChocolate1 = false;
+let gotChocolate1 = false;
+
+player1.onCollide("chocolate", () => {
+    inChocolate1 = true;
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, startY + itemSpacing*6), // Adjust position as necessary
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+});
+
+player1.onCollideUpdate("chocolate", () => {
+    onKeyPress(",", () => {
+        if (inChocolate1 && !gotChocolate1) {
+            addToInventory(1, "chocolate");
+            gotChocolate1 = true;
+        }
+    });
+});
+
+// End focus display after collision is over for player 1
 player1.onCollideEnd("fruitPinkGlow", (focusP1) => {
-    // destroy glow image
     focusP1.destroy();
 });
 
 player1.onCollideEnd("blueberry", () => {
     inBlueberry1 = false;
-    gotBlueberry1 = false;  // Add got flag reset
+    gotBlueberry1 = false; // Add got flag reset
 });
 
 player1.onCollideEnd("carrot", () => {
     inCarrot1 = false;
-    gotCarrot1 = false;  // Add got flag reset
+    gotCarrot1 = false; // Add got flag reset
+});
+
+player1.onCollideEnd("chocolate", () => {
+    inChocolate1 = false;
+    gotChocolate1 = false; // Add got flag reset
 });
 
 player1.onCollideEnd("eggs", () => {
     inEgg1 = false;
-    gotEgg1 = false;  // Add got flag reset
+    gotEgg1 = false; // Add got flag reset
 });
 
 player1.onCollideEnd("flour", () => {
     inFlour1 = false;
-    gotFlour1 = false;  // Add got flag reset
+    gotFlour1 = false; // Add got flag reset
 });
 
 player1.onCollideEnd("lemon", () => {
     inLemon1 = false;
-    gotLemon1 = false;  // Add got flag reset
+    gotLemon1 = false; // Add got flag reset
 });
 
 player1.onCollideEnd("strawberry", () => {
     inStrawberry1 = false;
-    gotStrawberry1 = false;  // Add got flag reset
+    gotStrawberry1 = false; // Add got flag reset
 });
 
 
+// player 2
 let inFlour2 = false;
 let gotFlour2 = false;
 
-// player 2
 player2.onCollide("flour", () => {
-	inFlour2 = true;
+    inFlour2 = true;
     var focusP2 = k.add([
         sprite("fruitBlueGlow"),
-        pos(15, 30),
+        pos(15, startY),
         area(),
         scale(.04),
         "fruitBlueGlow"
     ]);
 });
 
-
 player2.onCollideUpdate("flour", () => {
     onKeyPress("shift", () => {
-		if(inFlour2 && !gotFlour2){
-			addToInventory(2, "flour");
-			gotFlour = true;
-		}
-        
+        if (inFlour2 && !gotFlour2) {
+            addToInventory(2, "flour");
+            gotFlour2 = true;
+        }
     });
 });
 
@@ -689,10 +736,10 @@ let inEgg2 = false;
 let gotEgg2 = false;
 
 player2.onCollide("eggs", () => {
-	inEgg2 = true;
+    inEgg2 = true;
     var focusP2 = k.add([
         sprite("fruitBlueGlow"),
-        pos(15, 100),
+        pos(15, startY + itemSpacing),
         area(),
         scale(.04),
         "fruitBlueGlow"
@@ -701,11 +748,10 @@ player2.onCollide("eggs", () => {
 
 player2.onCollideUpdate("eggs", () => {
     onKeyPress("shift", () => {
-		if(inEgg2 && !gotEgg2){
-			addToInventory(2, "eggs");
-			gotEgg2 = true;
-		}
-        
+        if (inEgg2 && !gotEgg2) {
+            addToInventory(2, "eggs");
+            gotEgg2 = true;
+        }
     });
 });
 
@@ -713,10 +759,10 @@ let inStrawberry2 = false;
 let gotStrawberry2 = false;
 
 player2.onCollide("strawberry", () => {
-	inStrawberry2 = true;
+    inStrawberry2 = true;
     var focusP2 = k.add([
         sprite("fruitBlueGlow"),
-        pos(15, 170),
+        pos(15, startY + itemSpacing*2),
         area(),
         scale(.04),
         "fruitBlueGlow"
@@ -725,11 +771,10 @@ player2.onCollide("strawberry", () => {
 
 player2.onCollideUpdate("strawberry", () => {
     onKeyPress("shift", () => {
-		if(inStrawberry2 && !gotStrawberry2){
-			addToInventory(2, "strawberry");
-			gotStrawberry2 = true;
-		}
-        
+        if (inStrawberry2 && !gotStrawberry2) {
+            addToInventory(2, "strawberry");
+            gotStrawberry2 = true;
+        }
     });
 });
 
@@ -737,10 +782,10 @@ let inLemon2 = false;
 let gotLemon2 = false;
 
 player2.onCollide("lemon", () => {
-	inLemon2 = true;
+    inLemon2 = true;
     var focusP2 = k.add([
         sprite("fruitBlueGlow"),
-        pos(15, 240),
+        pos(15, startY + itemSpacing*3),
         area(),
         scale(.04),
         "fruitBlueGlow"
@@ -749,22 +794,21 @@ player2.onCollide("lemon", () => {
 
 player2.onCollideUpdate("lemon", () => {
     onKeyPress("shift", () => {
-		if(inLemon2 && !gotLemon2){
-			addToInventory(2, "lemon");
-			gotLemon2 = true;
-		}
-        
+        if (inLemon2 && !gotLemon2) {
+            addToInventory(2, "lemon");
+            gotLemon2 = true;
+        }
     });
 });
 
 let inBlueberry2 = false;
-let gotBluberry2 = false;
+let gotBlueberry2 = false;
 
 player2.onCollide("blueberry", () => {
-	inBlueberry2 = true;
+    inBlueberry2 = true;
     var focusP2 = k.add([
         sprite("fruitBlueGlow"),
-        pos(15, 310),
+        pos(15, startY + itemSpacing*4),
         area(),
         scale(.04),
         "fruitBlueGlow"
@@ -773,11 +817,10 @@ player2.onCollide("blueberry", () => {
 
 player2.onCollideUpdate("blueberry", () => {
     onKeyPress("shift", () => {
-		if(inBlueberry2 && !gotBluberry2){
-			addToInventory(2, "blueberry");
-			gotBluberry2 = true;
-		}
-        
+        if (inBlueberry2 && !gotBlueberry2) {
+            addToInventory(2, "blueberry");
+            gotBlueberry2 = true;
+        }
     });
 });
 
@@ -785,10 +828,10 @@ let inCarrot2 = false;
 let gotCarrot2 = false;
 
 player2.onCollide("carrot", () => {
-	inCarrot2 = true;
+    inCarrot2 = true;
     var focusP2 = k.add([
         sprite("fruitBlueGlow"),
-        pos(15, 380),
+        pos(15, startY + itemSpacing*5),
         area(),
         scale(.04),
         "fruitBlueGlow"
@@ -797,44 +840,76 @@ player2.onCollide("carrot", () => {
 
 player2.onCollideUpdate("carrot", () => {
     onKeyPress("shift", () => {
-		if(inCarrot2 && !gotCarrot2){
-			addToInventory(2, "carrot");
-			gotCarrot2 = true;
-		}
-        
+        if (inCarrot2 && !gotCarrot2) {
+            addToInventory(2, "carrot");
+            gotCarrot2 = true;
+        }
     });
 });
 
-// end focus display after collision is over
+let inChocolate2 = false;
+let gotChocolate2 = false;
+
+player2.onCollide("chocolate", () => {
+    inChocolate2 = true;
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, startY + itemSpacing*6), // Adjust position as necessary
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+});
+
+player2.onCollideUpdate("chocolate", () => {
+    onKeyPress("shift", () => {
+        if (inChocolate2 && !gotChocolate2) {
+            addToInventory(2, "chocolate");
+            gotChocolate2 = true;
+        }
+    });
+});
+
+// End focus display after collision is over for player 2
 player2.onCollideEnd("fruitBlueGlow", (focusP2) => {
-    // destroy glow image
     focusP2.destroy();
 });
 
 player2.onCollideEnd("blueberry", () => {
-	inBlueberry2 = false;
-	gotBluberry2 = false
+    inBlueberry2 = false;
+    gotBlueberry2 = false; // Add got flag reset
 });
+
 player2.onCollideEnd("carrot", () => {
-	inCarrot2 = false;
-	gotCarrot2 = false;
+    inCarrot2 = false;
+    gotCarrot2 = false; // Add got flag reset
 });
+
+player2.onCollideEnd("chocolate", () => {
+    inChocolate2 = false;
+    gotChocolate2 = false; // Add got flag reset
+});
+
 player2.onCollideEnd("eggs", () => {
-	inEgg2 = false;
-	gotEgg2 = false;
+    inEgg2 = false;
+    gotEgg2 = false; // Add got flag reset
 });
+
 player2.onCollideEnd("flour", () => {
-	inFlour2 = false;
-	gotFlour2 = false;
+    inFlour2 = false;
+    gotFlour2 = false; // Add got flag reset
 });
+
 player2.onCollideEnd("lemon", () => {
-	inLemon2 = false;
-	gotLemon2 = false;
+    inLemon2 = false;
+    gotLemon2 = false; // Add got flag reset
 });
+
 player2.onCollideEnd("strawberry", () => {
-	inStrawberry2 = false;
-	gotStrawberry2 = false;
+    inStrawberry2 = false;
+    gotStrawberry2 = false; // Add got flag reset
 });
+
 
 
 
@@ -1883,7 +1958,7 @@ k.onCollideEnd("player", "register", () => {
 
 /* ORDER SYSTEM */
 
-const menu = ["cupcake-strawberry", "cupcake-chocolate", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot"];
+const menu = ["cupcake-strawberry", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot"];
 
 const activeOrders = [null, null, null];
 
@@ -2014,7 +2089,7 @@ const customer_line = [];
 const ordered_line = [];
 const customerSprites = ["jimr", "ekin", "ouda"];
 const posLineArray = [[970, 430], [870, 430], [770, 430]]
-const orderedLinePosArray = [[70, 520], [170, 520], [270, 520], [370, 520]]
+const orderedLinePosArray = [[170, 520], [270, 520], [370, 520]]
 
 function createCustomer(ticketNumber, menuItem) {
     const randomSprite = customerSprites[Math.floor(Math.random() * customerSprites.length)];
