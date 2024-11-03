@@ -350,13 +350,13 @@ const frostingCounter = k.add([
 	body({ isStatic: true}),
 	"frostingCounter"
 ]);
-const mixer = k.add([
+const mixerPink = k.add([
     sprite("mixer"),
     pos(752, 3), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
-	"mixer"
+	"mixerPink"
 ]);
 const mixerBlue = k.add([
     sprite("mixerBlue"),
@@ -478,156 +478,161 @@ loadSprite("mixerBlueGlow", "sprites/mixerBlueGlow.png");
 loadSprite("mixerGreenGlow", "sprites/mixerGreenGlow.png");
 loadSprite("mixerBlackGlow", "sprites/mixerBlackGlow.png");
 loadSprite("mixerTimer", "sprites/mixerTimer.png");
-var mixerGlow;
-let recipeTried = true;
-let inMixerCollide = false;
-let mixerInUse = false;
-var mixerTimer;
-var recipeInMixer;
 
-player1.onCollide("mixer", () => {
-	recipeTried = false;
-	inMixerCollide = true;
-	if(mixerGlow){
-		mixerGlow.destroy();
+var pink_mixerGlow;
+let pink_recipeTried = true;
+let pink_inMixerCollide = false;
+let pink_mixerInUse = false;
+var pink_mixerTimer;
+var pink_recipeInMixer;
+
+var blue_mixerGlow;
+let blue_recipeTried = true;
+let blue_inMixerCollide = false;
+let blue_mixerInUse = false;
+var blue_mixerTimer;
+var blue_recipeInMixer;
+
+player1.onCollide("mixerPink", () => {
+	pink_recipeTried = false;
+	pink_inMixerCollide = true;
+	if (pink_mixerGlow) {
+		pink_mixerGlow.destroy();
 	}
-	if(!mixerInUse){
-		mixerGlow = k.add([
+	if (!pink_mixerInUse) {
+		pink_mixerGlow = k.add([
 			sprite("mixerPinkGlow"),
-			pos(660, 3),
+			pos(752, 3),
 			area(),
 			scale(.2),
-			body({ isStatic: true}),
+			body({ isStatic: true }),
 			"mixerPinkGlow"
 		]);
 	} else {
-		if(mixerTimer==null){
+		if (pink_mixerTimer == null) {
 			takeBatterOut(player1);
 		}
 	}
-})
+});
 
-player1.onCollideUpdate("mixer", () => {
+player1.onCollideUpdate("mixerPink", () => {
 	onKeyPress(",", () => {
-		if(inMixerCollide && !mixerInUse){
-			recipeToMake = checkInventoryForRecipe(playerInventories.player1);
-			if(mixerGlow && !recipeTried){
-				mixerGlow.destroy();
+		if (pink_inMixerCollide && !pink_mixerInUse) {
+			let recipeToMake = checkInventoryForRecipe(playerInventories.player1);
+			if (pink_mixerGlow && !pink_recipeTried) {
+				pink_mixerGlow.destroy();
 			}
 	
-			if(recipeToMake!=null){
-	
-				playerInventories.player1 = [null, null, null]
-				addToInventory(1, "blank")
-				addToInventory(1, "blank")
-				addToInventory(1, "blank")
-				playerInventories.player1 = [null, null, null]
-				recipeInMixer = recipeToMake;
+			if (recipeToMake != null) {
+				playerInventories.player1 = [null, null, null];
+				addToInventory(1, "blank");
+				addToInventory(1, "blank");
+				addToInventory(1, "blank");
+				playerInventories.player1 = [null, null, null];
+				pink_recipeInMixer = recipeToMake;
 				useMixer();
 
-			} else if (!recipeTried) {
-				mixerGlow = k.add([
+			} else if (!pink_recipeTried) {
+				pink_mixerGlow = k.add([
 					sprite("mixerBlackGlow"),
-					pos(660, 3),
+					pos(752, 3),
 					area(),
 					scale(.2),
-					body({ isStatic: true}),
+					body({ isStatic: true }),
 					"mixerBlackGlow"
 				]);
 			}
-			recipeTried = true;
+			pink_recipeTried = true;
 		}
-	})
-})
+	});
+});
 
-
-player2.onCollide("mixer", () => {
-	recipeTried = false;
-	inMixerCollide = true;
-	if(mixerGlow){
-		mixerGlow.destroy();
+player2.onCollide("mixerPink", () => {
+	pink_recipeTried = false;
+	pink_inMixerCollide = true;
+	if (pink_mixerGlow) {
+		pink_mixerGlow.destroy();
 	}
-	if(!mixerInUse){
-		mixerGlow = k.add([
+	if (!pink_mixerInUse) {
+		pink_mixerGlow = k.add([
 			sprite("mixerBlueGlow"),
-			pos(660, 3),
+			pos(752, 3),
 			area(),
 			scale(.2),
-			body({ isStatic: true}),
+			body({ isStatic: true }),
 			"mixerBlueGlow"
 		]);
 	} else {
-		if(mixerTimer==null){
+		if (pink_mixerTimer == null) {
 			takeBatterOut(player2);
 		}
 	}
-})
+});
 
-player2.onCollideUpdate("mixer", () => {
+player2.onCollideUpdate("mixerPink", () => {
 	onKeyPress(",", () => {
-		if(inMixerCollide && !mixerInUse){
-			recipeToMake = checkInventoryForRecipe(playerInventories.player2);
-			if(mixerGlow && !recipeTried){
-				mixerGlow.destroy();
+		if (pink_inMixerCollide && !pink_mixerInUse) {
+			let recipeToMake = checkInventoryForRecipe(playerInventories.player2);
+			if (pink_mixerGlow && !pink_recipeTried) {
+				pink_mixerGlow.destroy();
 			}
 	
-			if(recipeToMake!=null){
-	
-				playerInventories.player2 = [null, null, null]
-				addToInventory(2, "blank")
-				addToInventory(2, "blank")
-				addToInventory(2, "blank")
-				playerInventories.player2 = [null, null, null]
-				recipeInMixer = recipeToMake;
+			if (recipeToMake != null) {
+				playerInventories.player2 = [null, null, null];
+				addToInventory(2, "blank");
+				addToInventory(2, "blank");
+				addToInventory(2, "blank");
+				playerInventories.player2 = [null, null, null];
+				pink_recipeInMixer = recipeToMake;
 				useMixer();
 
-			} else if (!recipeTried) {
-				mixerGlow = k.add([
+			} else if (!pink_recipeTried) {
+				pink_mixerGlow = k.add([
 					sprite("mixerBlackGlow"),
-					pos(660, 3),
+					pos(752, 3),
 					area(),
 					scale(.2),
-					body({ isStatic: true}),
+					body({ isStatic: true }),
 					"mixerBlackGlow"
 				]);
 			}
-			recipeTried = true;
+			pink_recipeTried = true;
 		}
-	})
-})
-
-k.onCollideEnd("player", "mixer", () => {
-	mixerGlow.destroy();
-	recipeTried = false;
-	inMixerCollide = false;
+	});
 });
 
-function useMixer(){
-	mixerInUse = true;
-	mixerTimer = k.add([
+k.onCollideEnd("player", "mixerPink", () => {
+	pink_mixerGlow.destroy();
+	pink_recipeTried = false;
+	pink_inMixerCollide = false;
+});
+
+function useMixer() {
+	pink_mixerInUse = true;
+	pink_mixerTimer = k.add([
 		sprite("mixerTimer"),
-		pos(660, 3),
+		pos(752, 3),
 		area(),
 		scale(.2),
-		body({ isStatic: true}),
+		body({ isStatic: true }),
 		"mixerTimer"
 	]);
 
-	fadeOut(mixerTimer, 10);
+	fadeOut(pink_mixerTimer, 10);
 
 	k.wait(10, () => {
-	    if (mixerGlow) {
-	        mixerGlow.destroy();
+	    if (pink_mixerGlow) {
+	        pink_mixerGlow.destroy();
 	    }
-	    mixerGlow = k.add([
+	    pink_mixerGlow = k.add([
 	        sprite("mixerGreenGlow"),
-	        pos(660, 3),
+	        pos(752, 3),
 	        area(),
 	        scale(.2),
-	        body({ isStatic: true}),
+	        body({ isStatic: true }),
 	        "mixerGreenGlow"
 	    ]);
-		mixerTimer = null;
+		pink_mixerTimer = null;
 	});
 }
 
@@ -645,18 +650,17 @@ function fadeOut(obj, duration) {
     });
 }
 
-function takeBatterOut(player){
-	// only if they have an open spot for the mix to go
-	if((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
-		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))){
+function takeBatterOut(player) {
+	if ((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
+		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))) {
 		
-		mixerGlow.destroy();
-		mixerInUse = false;
+		pink_mixerGlow.destroy();
+		pink_mixerInUse = false;
 
-		if(player == player1){
-			addToInventory(1, recipeInMixer + "Batter")
+		if (player == player1) {
+			addToInventory(1, pink_recipeInMixer + "Batter");
 		} else {
-			addToInventory(2, recipeInMixer + "Batter")
+			addToInventory(2, pink_recipeInMixer + "Batter");
 		}
 	}
 }
@@ -682,6 +686,148 @@ function arraysEqual(arr1, arr2) {
     return true;
 }
 
+player1.onCollide("mixerBlue", () => {
+	blue_recipeTried = false;
+	blue_inMixerCollide = true;
+	if (blue_mixerGlow) {
+		blue_mixerGlow.destroy();
+	}
+	if (!blue_mixerInUse) {
+		blue_mixerGlow = k.add([
+			sprite("mixerPinkGlow"),
+			pos(892, 4),
+			area(),
+			scale(.2),
+			body({ isStatic: true }),
+			"mixerPinkGlow"
+		]);
+	} else {
+		if (blue_mixerTimer == null) {
+			takeBatterOut(player1);
+		}
+	}
+});
+
+player1.onCollideUpdate("mixerBlue", () => {
+	onKeyPress(",", () => {
+		if (blue_inMixerCollide && !blue_mixerInUse) {
+			let recipeToMake = checkInventoryForRecipe(playerInventories.player1);
+			if (blue_mixerGlow && !blue_recipeTried) {
+				blue_mixerGlow.destroy();
+			}
+	
+			if (recipeToMake != null) {
+				playerInventories.player1 = [null, null, null];
+				addToInventory(1, "blank");
+				addToInventory(1, "blank");
+				addToInventory(1, "blank");
+				playerInventories.player1 = [null, null, null];
+				blue_recipeInMixer = recipeToMake;
+				blue_useMixer();
+
+			} else if (!blue_recipeTried) {
+				blue_mixerGlow = k.add([
+					sprite("mixerBlackGlow"),
+					pos(892, 4),
+					area(),
+					scale(.2),
+					body({ isStatic: true }),
+					"mixerBlackGlow"
+				]);
+			}
+			blue_recipeTried = true;
+		}
+	});
+});
+
+player2.onCollide("mixerBlue", () => {
+	blue_recipeTried = false;
+	blue_inMixerCollide = true;
+	if (blue_mixerGlow) {
+		blue_mixerGlow.destroy();
+	}
+	if (!blue_mixerInUse) {
+		blue_mixerGlow = k.add([
+			sprite("mixerBlueGlow"),
+			pos(892, 4),
+			area(),
+			scale(.2),
+			body({ isStatic: true }),
+			"mixerBlueGlow"
+		]);
+	} else {
+		if (blue_mixerTimer == null) {
+			takeBatterOut(player2);
+		}
+	}
+});
+
+player2.onCollideUpdate("mixerBlue", () => {
+	onKeyPress(",", () => {
+		if (blue_inMixerCollide && !blue_mixerInUse) {
+			let recipeToMake = checkInventoryForRecipe(playerInventories.player2);
+			if (blue_mixerGlow && !blue_recipeTried) {
+				blue_mixerGlow.destroy();
+			}
+	
+			if (recipeToMake != null) {
+				playerInventories.player2 = [null, null, null];
+				addToInventory(2, "blank");
+				addToInventory(2, "blank");
+				addToInventory(2, "blank");
+				playerInventories.player2 = [null, null, null];
+				blue_recipeInMixer = recipeToMake;
+				blue_useMixer();
+
+			} else if (!blue_recipeTried) {
+				blue_mixerGlow = k.add([
+					sprite("mixerBlackGlow"),
+					pos(892, 4),
+					area(),
+					scale(.2),
+					body({ isStatic: true }),
+					"mixerBlackGlow"
+				]);
+			}
+			blue_recipeTried = true;
+		}
+	});
+});
+
+k.onCollideEnd("player", "mixerBlue", () => {
+	blue_mixerGlow.destroy();
+	blue_recipeTried = false;
+	blue_inMixerCollide = false;
+});
+
+function blue_useMixer() {
+	blue_mixerInUse = true;
+	blue_mixerTimer = k.add([
+		sprite("mixerTimer"),
+		pos(892, 4),
+		area(),
+		scale(.2),
+		body({ isStatic: true }),
+		"mixerTimer"
+	]);
+
+	fadeOut(blue_mixerTimer, 10);
+
+	k.wait(10, () => {
+	    if (blue_mixerGlow) {
+	        blue_mixerGlow.destroy();
+	    }
+	    blue_mixerGlow = k.add([
+	        sprite("mixerGreenGlow"),
+	        pos(892, 4),
+	        area(),
+	        scale(.2),
+	        body({ isStatic: true }),
+	        "mixerGreenGlow"
+	    ]);
+		blue_mixerTimer = null;
+	});
+}
 
 /* OVEN INTERACTIONS */
 
@@ -690,6 +836,7 @@ loadSprite("ovenBlueGlow", "sprites/ovenBlueGlow.png");
 loadSprite("ovenGreenGlow", "sprites/ovenGreenGlow.png");
 loadSprite("ovenBlackGlow", "sprites/ovenBlackGlow.png");
 loadSprite("ovenTimer", "sprites/ovenTimer.png");
+
 var ovenGlow;
 let batterTried = true;
 let batterTypeInOven;
