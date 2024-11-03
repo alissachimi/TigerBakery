@@ -70,6 +70,7 @@ loadSprite("floor", "sprites/pink-floor.png");
 loadSprite("displayCase", "sprites/displayCase.png");
 loadSprite("register", "sprites/register.png");
 loadSprite("mixerBlue", "sprites/mixerBlue.png");
+loadSprite("ingredientShelf", "sprites/shelf-long.png");
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -80,6 +81,19 @@ const floor = k.add([
     // body({ isStatic: true }),
     "floor"
 ]);
+
+const ingredientShelf = k.add([
+    sprite("ingredientShelf"),
+    pos(0,60),
+    scale(.2),
+    "ingredientShelf"
+]);
+const ingredientShelf2 = k.add([
+    sprite("ingredientShelf"),
+    pos(0,240),
+    scale(.2),
+    "ingredientShelf2"
+])
 
 /* CREATE PLAYERS */
 const player1 = k.add([
