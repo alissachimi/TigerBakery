@@ -339,7 +339,7 @@ const counter3 = k.add([
 ]);
 const garabge = k.add([
     sprite("garbage"),
-    pos(1038, 100), // Starting position
+    pos(1065, 110), // Starting position
     area(),        // Enable collision area
     scale(.18),
 	body({ isStatic: true}),
@@ -921,13 +921,15 @@ loadSprite("garbageGreenGlow", "sprites/garbageGreenGlow.png");
 loadSprite("garbageBlackGlow", "sprites/garbageBlackGlow.png");
 
 var garbageGlow;
+let inGarbage1 = false;
 player1.onCollide("garbage", () => {
+	inGarbage1 = true;
 	if(garbageGlow){
 		garbageGlow.destroy()
 	}
 	garbageGlow = k.add([
 		sprite("garbagePinkGlow"),
-		pos(1038, 100),
+		pos(1065, 110),
 		area(),
 		scale(.18),
 		body({ isStatic: true }),
@@ -935,13 +937,16 @@ player1.onCollide("garbage", () => {
 	]);
 	
 })
+
+let inGarbage2 = false;
 player2.onCollide("garbage", () => {
+	inGarbage2 = true;
 	if(garbageGlow){
 		garbageGlow.destroy()
 	}
 	garbageGlow = k.add([
 		sprite("garbageBlueGlow"),
-		pos(1038, 100),
+		pos(1065, 110),
 		area(),
 		scale(.18),
 		body({ isStatic: true }),
@@ -952,49 +957,60 @@ player2.onCollide("garbage", () => {
 
 player1.onCollideUpdate("garbage", () => {
 	onKeyPress(",", () => {
-		playerInventories.player1 = [null, null, null];
-				addToInventory(1, "blank");
-				addToInventory(1, "blank");
-				addToInventory(1, "blank");
-				playerInventories.player1 = [null, null, null];
-		if(garbageGlow){
-			garbageGlow.destroy()
+		if(inGarbage1){
+			playerInventories.player1 = [null, null, null];
+			addToInventory(1, "blank");
+			addToInventory(1, "blank");
+			addToInventory(1, "blank");
+			playerInventories.player1 = [null, null, null];
+			if(garbageGlow){
+				garbageGlow.destroy()
+			}
+			garbageGlow = k.add([
+				sprite("garbageGreenGlow"),
+				pos(1065, 110),
+				area(),
+				scale(.18),
+				body({ isStatic: true }),
+				"garbageGreenGlow"
+			]);
 		}
-		garbageGlow = k.add([
-			sprite("garbageGreenGlow"),
-			pos(1038, 100),
-			area(),
-			scale(.18),
-			body({ isStatic: true }),
-			"garbageGreenGlow"
-		]);
+		
 	});
 });
 
 player2.onCollideUpdate("garbage", () => {
 	onKeyPress("shift", () => {
-
-		playerInventories.player2 = [null, null, null];
-				addToInventory(2, "blank");
-				addToInventory(2, "blank");
-				addToInventory(2, "blank");
-				playerInventories.player2 = [null, null, null];
-		if(garbageGlow){
-			garbageGlow.destroy()
+		if(inGarbage2){
+			playerInventories.player2 = [null, null, null];
+			addToInventory(2, "blank");
+			addToInventory(2, "blank");
+			addToInventory(2, "blank");
+			playerInventories.player2 = [null, null, null];
+			if(garbageGlow){
+				garbageGlow.destroy()
+			}
+			garbageGlow = k.add([
+				sprite("garbageGreenGlow"),
+				pos(1065, 110),
+				area(),
+				scale(.18),
+				body({ isStatic: true }),
+				"garbageGreenGlow"
+			]);
 		}
-		garbageGlow = k.add([
-			sprite("garbageGreenGlow"),
-			pos(1038, 100),
-			area(),
-			scale(.18),
-			body({ isStatic: true }),
-			"garbageGreenGlow"
-		]);
+		
 	});
 });
 
 k.onCollideEnd("player", "garbage", () => {
 	garbageGlow.destroy();
+});
+player1.onCollideEnd("garbage", () => {
+	inGarbage1 = false;
+});
+player2.onCollideEnd("garbage", () => {
+	inGarbage2 = false;
 });
 
 
