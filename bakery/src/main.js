@@ -1603,7 +1603,7 @@ player1.onCollide("oven2", () => {
 player1.onCollideUpdate("oven2", () => {
 	onKeyPress(",", () => {
 		if (inOvenCollide2) {
-			let batterToCook = checkInventoryForBatter(playerInventories.player2);
+			let batterToCook = checkInventoryForBatter(playerInventories.player1);
 			if (ovenGlow2 && !batterTried2) {
 				ovenGlow2.destroy();
 			}
