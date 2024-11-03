@@ -798,7 +798,7 @@ player2.onCollide("mixerBlue", () => {
 });
 
 player2.onCollideUpdate("mixerBlue", () => {
-	onKeyPress(",", () => {
+	onKeyPress("shift", () => {
 		if (blue_inMixerCollide && !blue_mixerInUse) {
 			let recipeToMake = checkInventoryForRecipe(playerInventories.player2);
 			if (blue_mixerGlow && !blue_recipeTried) {
@@ -964,7 +964,7 @@ player2.onCollide("oven1", () => {
 });
 
 player2.onCollideUpdate("oven1", () => {
-	onKeyPress(",", () => {
+	onKeyPress("shift", () => {
 		if (inOvenCollide1) {
 			let batterToCook = checkInventoryForBatter(playerInventories.player2);
 			if (ovenGlow1 && !batterTried1) {
@@ -1130,7 +1130,7 @@ player2.onCollide("oven2", () => {
 });
 
 player2.onCollideUpdate("oven2", () => {
-	onKeyPress(",", () => {
+	onKeyPress("shift", () => {
 		if (inOvenCollide2) {
 			let batterToCook = checkInventoryForBatter(playerInventories.player2);
 			if (ovenGlow2 && !batterTried2) {
@@ -1301,7 +1301,7 @@ player2.onCollide("frostingCounter", () => {
 })
 
 player2.onCollideUpdate("frostingCounter", () => {
-	onKeyPress(",", () => {
+	onKeyPress("shift", () => {
 		if(inFrostingCollide){
 			typeToFrost = checkInventoryForTin(playerInventories.player2);
 			if(frostingCounterGlow && !frostingTried){
@@ -1440,7 +1440,7 @@ player2.onCollide("register", () => {
 })
 
 player2.onCollideUpdate("register", () => {
-	onKeyPress(",", () => {
+	onKeyPress("shift", () => {
         if (canOrder == true){
             initiateOrder();
             canOrder = false;
