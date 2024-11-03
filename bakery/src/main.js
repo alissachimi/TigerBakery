@@ -490,7 +490,9 @@ function addToInventory(player, item) {
 // Function to remove an item from a player's inventory
 function removeFromInventory(player, index){
     const inventory = playerInventories["player"+player];
-    inventory[index] = null; // Add the item to the first empty slot
+	console.log("before" + inventory)
+    inventory[index] = null;
+	console.log("after" + inventory)
     updateInventorySlot(player, index, "sprites/blank.png");
 }
 
@@ -955,7 +957,7 @@ player2.onCollide("garbage", () => {
 	
 })
 
-/*
+
 player1.onCollideUpdate("garbage", () => {
 	onKeyPress(",", () => {
 		if(inGarbage1){
@@ -1004,7 +1006,7 @@ player2.onCollideUpdate("garbage", () => {
 		
 	});
 });
-*/
+
 k.onCollideEnd("player", "garbage", () => {
 	garbageGlow.destroy();
 });
@@ -1125,7 +1127,7 @@ player2.onCollide("mixerPink", () => {
 });
 
 player2.onCollideUpdate("mixerPink", () => {
-	onKeyPress(",", () => {
+	onKeyPress("shift", () => {
 		if (pink_inMixerCollide && !pink_mixerInUse) {
 			let recipeToMake = checkInventoryForRecipe(playerInventories.player2);
 			if (pink_mixerGlow && !pink_recipeTried) {
@@ -1413,6 +1415,7 @@ let batterTypeInOven1;
 let inOvenCollide1 = false;
 let ovenInUse1 = false;
 var ovenTimer1 = null;
+let tookCupcakesOut = false;
 
 player1.onCollide("oven1", () => {
 	batterTried1 = false;
@@ -1429,8 +1432,9 @@ player1.onCollide("oven1", () => {
 			body({ isStatic: true }),
 			"ovenPinkGlow"
 		]);
-	} else if (ovenTimer1 == null) {
+	} else if (ovenTimer1 == null && !tookCupcakesOut) {
 		takeCupcakesOut(player1);
+		tookCupcakesOut = true;
 	}
 });
 
@@ -1478,8 +1482,9 @@ player2.onCollide("oven1", () => {
 			body({ isStatic: true }),
 			"ovenBlueGlow"
 		]);
-	} else if (ovenTimer1 == null) {
+	} else if (ovenTimer1 == null && !tookCupcakesOut) {
 		takeCupcakesOut(player2);
+		tookCupcakesOut = true;
 	}
 });
 
@@ -1519,6 +1524,7 @@ k.onCollideEnd("player", "oven1", () => {
 });
 
 function useOven1() {
+	tookCupcakesOut = false;
 	ovenInUse1 = true;
 	ovenTimer1 = k.add([
 		sprite("ovenTimer"),
@@ -1579,6 +1585,7 @@ let batterTypeInOven2;
 let inOvenCollide2 = false;
 let ovenInUse2 = false;
 var ovenTimer2 = null;
+let tookCupcakesOut2 = false;
 
 player1.onCollide("oven2", () => {
 	batterTried2 = false;
@@ -1595,8 +1602,9 @@ player1.onCollide("oven2", () => {
 			body({ isStatic: true }),
 			"ovenPinkGlow"
 		]);
-	} else if (ovenTimer2 == null) {
+	} else if (ovenTimer2 == null && !tookCupcakesOut2) {
 		takeCupcakesOut2(player1);
+		tookCupcakesOut2 = true;
 	}
 });
 
@@ -1644,8 +1652,9 @@ player2.onCollide("oven2", () => {
 			body({ isStatic: true }),
 			"ovenBlueGlow"
 		]);
-	} else if (ovenTimer2 == null) {
+	} else if (ovenTimer2 == null && !tookCupcakesOut2) {
 		takeCupcakesOut2(player2);
+		tookCupcakesOut2 = true;
 	}
 });
 
@@ -1686,6 +1695,7 @@ k.onCollideEnd("player", "oven2", () => {
 
 function useOven2() {
 	ovenInUse2 = true;
+	tookCupcakesOut2 = false;
 	ovenTimer2 = k.add([
 		sprite("ovenTimer"),
 		pos(510, 38),
@@ -1976,7 +1986,7 @@ k.onCollideEnd("player", "register", () => {
 
 /* ORDER SYSTEM */
 
-const menu = ["cupcake-strawberry", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot"];
+const menu = ["cupcake-strawberry", "cupcake-lemon", "cupcake-blueberry", "cupcake-carrot", "cupcake-chocolate"];
 
 const activeOrders = [null, null, null];
 
