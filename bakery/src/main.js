@@ -5,7 +5,7 @@ const k =  kaboom({
     height: 600,
     font: "sans-serif",
     canvas: document.querySelector("#mycanvas"),
-    background: [ 144, 143, 97, ]
+    background: [184, 183, 137]
 })
 
 ///////////////////////////////////////////////////////////////////////////// basic player functionality
@@ -66,7 +66,7 @@ loadSprite("lemon", "sprites/lemon.png");
 loadSprite("strawberry", "sprites/strawberry.png");
 loadSprite("oven", "sprites/oven.png");
 loadSprite("frostingCounter", "sprites/frostingCounter.png");
-loadSprite("floor", "sprites/floor-wooden.png");
+loadSprite("floor", "sprites/pink-floor.png");
 loadSprite("displayCase", "sprites/displayCase.png");
 loadSprite("register", "sprites/register.png");
 
@@ -74,8 +74,8 @@ loadSprite("register", "sprites/register.png");
 // note: MUST add floor before people otherwise it will cover them!!!
 const floor = k.add([
     sprite("floor"),
-    pos(0, 60), // 
-    scale(.6),
+    pos(0, 17), // 
+    scale(1),
     // body({ isStatic: true }),
     "floor"
 ]);
