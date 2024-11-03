@@ -285,13 +285,6 @@ const oven2 = k.add([
 
 k.add([
     sprite("counter"),
-    pos(0, 0), // Starting position
-    area(),        // Enable collision area
-    scale(.2),
-	body({ isStatic: true}),
-]);
-k.add([
-    sprite("counter"),
     pos(280, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
