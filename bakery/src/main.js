@@ -382,25 +382,25 @@ const mixerBlue = k.add([
 	"mixerBlue"
 ]);
 
-// const flour = k.add([
-//     sprite("flour"),
-//     pos(15, 80), // Starting position
-//     area(),        // Enable collision area
-//     body(),         // Enables physics
-//     scale(.05),
-//     "flour"
-// ]);
-// const eggs = k.add([
-//     sprite("eggs"),
-//     pos(15, 160), // Starting position
-//     area(),        // Enable collision area
-//     body(),         // Enables physics
-//     scale(.05),
-//     "eggs"
-// ]);
+const flour = k.add([
+    sprite("flour"),
+    pos(15, 60), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "flour"
+]);
+const eggs = k.add([
+    sprite("eggs"),
+    pos(15, 120), // Starting position
+    area(),        // Enable collision area
+    body(),         // Enables physics
+    scale(.05),
+    "eggs"
+]);
 const strawberry = k.add([
     sprite("strawberry"),
-    pos(15, 80), // Starting position
+    pos(15, 180), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     scale(.05),
@@ -408,26 +408,25 @@ const strawberry = k.add([
 ]);
 const lemon = k.add([
     sprite("lemon"),
-    pos(15, 160), // Starting position
+    pos(15, 240), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     scale(.05),
     "lemon"
 ]);
-
 const blueberry = k.add([
     sprite("blueberry"),
-    pos(15, 240),
+    pos(15, 300),
     area(),
     scale(.05),
     "blueberry"
 ]);
-
 const carrot = k.add([
     sprite("carrot"),
-    pos(15, 320),
+    pos(15, 360),
     area(),
     scale(.05),
+    "carrot"
 ]);
 
 /* PLAYER INVENTORIES */
