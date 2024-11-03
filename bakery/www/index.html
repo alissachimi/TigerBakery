@@ -85,7 +85,7 @@
             bottom: 20px;
             right: 20px;
             padding: 15px 30px;
-            background-color: #ff6347; /* Tomato color */
+            background-color: #908F61; /* Tomato color */
             color: white;
             border: none;
             border-radius: 50px;
@@ -98,7 +98,7 @@
         }
 
         .fancy-button:hover {
-            background-color: #ff4500; /* Darker shade for hover */
+            background-color: #5f5e41; /* Darker shade for hover */
             transform: translateY(-3px);
         }
   </style>
@@ -108,6 +108,11 @@
         <div id="start-screen">
             <img class="background" src="sprites/main.png">
             <button class="fancy-button" id="start-button">Start Game</button>
+            <button class="fancy-button" id="directions-button" style="bottom: 90px;">Directions</button>
+        </div>
+        <div id="directions-screen" style="display: none;">
+            <img class="background" src="sprites/directions.png">
+            <button class="fancy-button" id="start-button2" style="top:20px; bottom: auto;">Start Game</button>
         </div>
         <div class="section coins">
             <div><img class="slot" src="sprites/coin.png" style="margin: 0px; background-color: #55555500;"></div>
@@ -148,6 +153,18 @@
     document.getElementById("start-button").onclick = function() {
         // Hide the start screen and show the bakery interface
         document.getElementById("start-screen").style.display = "none";
+        document.getElementById("directions-screen").style.display = "none";
+    };
+    document.getElementById("start-button2").onclick = function() {
+        // Hide the start screen and show the bakery interface
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("directions-screen").style.display = "none";
+    };
+
+    document.getElementById("directions-button").onclick = function() {
+        // Hide the start screen and show the bakery interface
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("directions-screen").style.display = "block";
     };
 </script>
 </body>
