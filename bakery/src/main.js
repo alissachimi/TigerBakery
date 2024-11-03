@@ -297,28 +297,28 @@ k.add([
 ]);
 k.add([
     sprite("displayCase"),
-    pos(0, 330), // Starting position
+    pos(165, 330), // Starting position
     area(),        // Enable collision area
     scale(.3),
 	body({ isStatic: true}),
 ]);
 k.add([
     sprite("displayCase"),
-    pos(195, 330), // Starting position
+    pos(360, 330), // Starting position
     area(),        // Enable collision area
     scale(.3),
 	body({ isStatic: true}),
 ]);
 k.add([
     sprite("displayCase"),
-    pos(390, 330), // Starting position
+    pos(555, 330), // Starting position
     area(),        // Enable collision area
     scale(.3),
 	body({ isStatic: true}),
 ]);
 k.add([
     sprite("displayCase"),
-    pos(585, 330), // Starting position
+    pos(750, 330), // Starting position
     area(),        // Enable collision area
     scale(.3),
 	body({ isStatic: true}),
@@ -326,7 +326,7 @@ k.add([
 
 k.add([
     sprite("register"),
-    pos(785, 330), // Starting position
+    pos(950, 330), // Starting position
     area(),        // Enable collision area
     scale(.3),
 	body({ isStatic: true}),
@@ -1036,7 +1036,7 @@ player1.onCollide("register", () => {
 	}
 	registerGlow = k.add([
 		sprite("registerPinkGlow"),
-        pos(805, 330),
+        pos(950, 330),
         area(),
 		scale(.25),
 		body({ isStatic: true}),
@@ -1060,7 +1060,7 @@ player2.onCollide("register", () => {
 	}
 	registerGlow = k.add([
 		sprite("registerBlueGlow"),
-        pos(805, 330),
+        pos(950, 330),
         area(),
 		scale(.25),
 		body({ isStatic: true}),
@@ -1116,6 +1116,12 @@ function initiateOrder(){
         }
 
         line.shift(); // Remove this customer from the line
+		customer_line[0].pos.x = orderedLinePosArray[ordered_line.length][0]
+		customer_line[0].pos.y = orderedLinePosArray[ordered_line.length][1]
+
+		ordered_line.push(customer_line[0]);
+		customer_line.shift();
+		
     }
 }
 
@@ -1178,7 +1184,11 @@ player2.onCollide("customer", (customer) => {
 /* CUSTOMERS */
 
 const line = [];
+const customer_line = [];
+const ordered_line = [];
 const customerSprites = ["jimr", "ekin", "ouda"];
+const posLineArray = [[970, 430], [870, 430], [770, 430]]
+const orderedLinePosArray = [[70, 520], [170, 520], [270, 520], [370, 520]]
 
 function createCustomer(ticketNumber, menuItem) {
     const randomSprite = customerSprites[Math.floor(Math.random() * customerSprites.length)];
@@ -1187,9 +1197,9 @@ function createCustomer(ticketNumber, menuItem) {
             animSpeed: 1,
             frame:0
         }),
-        pos(785, 300),
+        pos(posLineArray[line.length][0], posLineArray[line.length][1]),
         area(),
-        body({ isStatic: false }),
+        body({ isStatic: true }),
         "customer", 
         scale(.1),
         {
@@ -1197,6 +1207,11 @@ function createCustomer(ticketNumber, menuItem) {
             menuItem: menuItem
         }
     ]);
+	customer_line.push(customer);
+}
+
+function moveCustomerUp(){
+	
 }
 
 function generateCustomers() {
@@ -1216,7 +1231,7 @@ function generateCustomers() {
             };
             line.push(customer);
         }
-    }, 5000); // 20 seconds in milliseconds
+    }, 3000); // 20 seconds in milliseconds
 }
 
 
