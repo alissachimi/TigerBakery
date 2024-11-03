@@ -1888,6 +1888,20 @@ function createCustomer(ticketNumber, menuItem) {
 	customer_line.push(customer);
 }
 
+onUpdate(() => {
+    // Check if line length is not zero and registerGlow is false
+    if (line.length !== 0 && !registerGlow) {
+        registerGlow = k.add([
+			sprite("registerGreenGlow"),
+			pos(970, 335),
+			area(),
+			scale(.25),
+			body({ isStatic: true}),
+			"registerGreenGlow"
+		]);
+    }
+});
+
 function moveCustomerUp() {
     for (let i = 0; i < customer_line.length; i++) {
         // Move each customer to the position of the one ahead of them

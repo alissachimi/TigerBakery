@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bakery</title>
+  <link rel="icon" href="sprites/cupcake-strawberry.png" type="image/x-icon">
   <style>
     html, body {
       margin: 0;
@@ -63,10 +64,51 @@
             border-radius: 2px solid #770c3b; /* Rounded corners */
             display: inline-block; /* Display as inline block */
         }
+        .background {
+            margin: 0;
+            top:0;
+            left:0;
+            background: no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            position: absolute; /* Ensure it covers the whole screen */
+            z-index: 99; /* Set background above other elements */
+        }
+
+        .fancy-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 30px;
+            background-color: #ff6347; /* Tomato color */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s, transform 0.3s;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .fancy-button:hover {
+            background-color: #ff4500; /* Darker shade for hover */
+            transform: translateY(-3px);
+        }
   </style>
 </head>
 <body>
 	<header>
+        <div id="start-screen">
+            <img class="background" src="sprites/main.png">
+            <button class="fancy-button" id="start-button">Start Game</button>
+        </div>
         <div class="section coins">
             <div><img class="slot" src="sprites/coin.png" style="margin: 0px; background-color: #55555500;"></div>
             <span id="balance" style="margin: 20px;">100</span> <!-- Display coins -->
@@ -102,5 +144,11 @@
   	<canvas id="mycanvas"></canvas>
 </div>
   <script src="main.js"></script>
+  <script>
+    document.getElementById("start-button").onclick = function() {
+        // Hide the start screen and show the bakery interface
+        document.getElementById("start-screen").style.display = "none";
+    };
+</script>
 </body>
 </html>
