@@ -93,7 +93,7 @@ const ingredientShelf2 = k.add([
     pos(0,240),
     scale(.2),
     "ingredientShelf2"
-])
+]);
 
 /* CREATE PLAYERS */
 const player1 = k.add([
@@ -297,20 +297,28 @@ const oven2 = k.add([
 	"oven"
 ]);
 
-k.add([
+const counter1 = k.add([
     sprite("counter"),
     pos(280, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
 ]);
-k.add([
+const counter2 = k.add([
     sprite("counter"),
     pos(612, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
 ]);
+const counter3 = k.add([
+    sprite("counter"),
+    pos(800, 600), // Starting position
+    area(),        // Enable collision area
+    scale(.2),
+	body({ isStatic: true}),
+]);
+
 k.add([
     sprite("displayCase"),
     pos(165, 330), // Starting position
@@ -373,33 +381,54 @@ const mixerBlue = k.add([
 	body({ isStatic: true}),
 	"mixerBlue"
 ]);
+
+// const flour = k.add([
+//     sprite("flour"),
+//     pos(15, 80), // Starting position
+//     area(),        // Enable collision area
+//     body(),         // Enables physics
+//     scale(.05),
+//     "flour"
+// ]);
+// const eggs = k.add([
+//     sprite("eggs"),
+//     pos(15, 160), // Starting position
+//     area(),        // Enable collision area
+//     body(),         // Enables physics
+//     scale(.05),
+//     "eggs"
+// ]);
 const strawberry = k.add([
     sprite("strawberry"),
-    pos(300, 300), // Starting position
+    pos(15, 80), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     scale(.05),
     "strawberry"
 ]);
-
-const flour = k.add([
-    sprite("flour"),
-    pos(300, 300), // Starting position
+const lemon = k.add([
+    sprite("lemon"),
+    pos(15, 160), // Starting position
     area(),        // Enable collision area
     body(),         // Enables physics
     scale(.05),
-    "flour"
+    "lemon"
 ]);
 
-const eggs = k.add([
-    sprite("eggs"),
-    pos(400, 400), // Starting position
-    area(),        // Enable collision area
-    body(),         // Enables physics
+const blueberry = k.add([
+    sprite("blueberry"),
+    pos(15, 240),
+    area(),
     scale(.05),
-    "eggs"
+    "blueberry"
 ]);
 
+const carrot = k.add([
+    sprite("carrot"),
+    pos(15, 320),
+    area(),
+    scale(.05),
+]);
 
 /* PLAYER INVENTORIES */
 const playerInventories = {
