@@ -72,6 +72,11 @@ loadSprite("register", "sprites/register.png");
 loadSprite("mixerBlue", "sprites/mixerBlue.png");
 loadSprite("ingredientShelf", "sprites/shelf-long.png");
 loadSprite("garbage", "sprites/garbage.png");
+loadSprite("fruitGreenGlow", "sprites/fruitGreenGlow.png");
+loadSprite("fruitPinkGlow", "sprites/fruitPinkGlow.png");
+loadSprite("fruitBlueGlow", "sprites/fruitBlueGlow.png");
+loadSprite("fruitBlackGlow", "sprites/fruitBlackGlow.png");
+
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -85,15 +90,21 @@ const floor = k.add([
 
 const ingredientShelf = k.add([
     sprite("ingredientShelf"),
-    pos(0,60),
+    pos(0,0),
     scale(.2),
     "ingredientShelf"
 ]);
 const ingredientShelf2 = k.add([
     sprite("ingredientShelf"),
-    pos(0,240),
+    pos(0,180),
     scale(.2),
     "ingredientShelf2"
+]);
+const ingredientShelf3 = k.add([
+    sprite("ingredientShelf"),
+    pos(0,240),
+    scale(.2),
+    "ingredientShelf3"
 ]);
 
 /* CREATE PLAYERS */
@@ -393,48 +404,44 @@ const mixerBlue = k.add([
 
 const flour = k.add([
     sprite("flour"),
-    pos(15, 60), // Starting position
+    pos(15, 30), // Starting position
     area(),        // Enable collision area
-    body(),         // Enables physics
-    scale(.05),
+    scale(.035),
     "flour"
 ]);
 const eggs = k.add([
     sprite("eggs"),
-    pos(15, 120), // Starting position
+    pos(15, 100), // Starting position
     area(),        // Enable collision area
-    body(),         // Enables physics
-    scale(.05),
+    scale(.035),
     "eggs"
 ]);
 const strawberry = k.add([
     sprite("strawberry"),
-    pos(15, 180), // Starting position
+    pos(15, 170), // Starting position
     area(),        // Enable collision area
-    body(),         // Enables physics
-    scale(.05),
+    scale(.035),
     "strawberry"
 ]);
 const lemon = k.add([
     sprite("lemon"),
     pos(15, 240), // Starting position
     area(),        // Enable collision area
-    body(),         // Enables physics
-    scale(.05),
+    scale(.035),
     "lemon"
 ]);
 const blueberry = k.add([
     sprite("blueberry"),
-    pos(15, 300),
+    pos(15, 310),
     area(),
-    scale(.05),
+    scale(.035),
     "blueberry"
 ]);
 const carrot = k.add([
     sprite("carrot"),
-    pos(15, 360),
+    pos(15, 380),
     area(),
-    scale(.05),
+    scale(.035),
     "carrot"
 ]);
 
@@ -474,36 +481,164 @@ function updateInventorySlot(playerNum, index, itemImage) {
 }
 
 /* COLLISION EVENTS */
-
-player1.onCollide("strawberry", () => {
-    addToInventory(1, "strawberry");
-    strawberry.destroy();
-});
-
-player2.onCollide("strawberry", () => {
-    addToInventory(2, "strawberry");
-    strawberry.destroy();
-});
-
+// player 1
 player1.onCollide("flour", () => {
-    addToInventory(1, "flour");
-    flour.destroy();
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, 30),
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+    onKeyDown(",", () => {
+        addToInventory(1, "flour");
+    })
 });
-
-player2.onCollide("flour", () => {
-    addToInventory(2, "flour");
-    flour.destroy();
-});
-
 player1.onCollide("eggs", () => {
-    addToInventory(1, "eggs");
-    eggs.destroy();
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, 100),
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+    onKeyDown(",", () => {
+        addToInventory(1, "eggs");
+    })
 });
-
+player1.onCollide("strawberry", () => {
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, 170),
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+    onKeyDown(",", () => {
+        addToInventory(1, "strawberry");
+    })
+});
+player1.onCollide("lemon", () => {
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, 240),
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+    onKeyDown(",", () => {
+        addToInventory(1, "lemon");
+    })
+});
+player1.onCollide("blueberry", () => {
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, 310),
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+    onKeyDown(",", () => {
+        addToInventory(1, "blueberry");
+    })
+});
+player1.onCollide("carrot", () => {
+    var focusP1 = k.add([
+        sprite("fruitPinkGlow"),
+        pos(15, 380),
+        area(),
+        scale(.04),
+        "fruitPinkGlow"
+    ]);
+    onKeyDown(",", () => {
+        addToInventory(1, "carrot");
+    })
+});
+// end focus display after collision is over
+player1.onCollideEnd("fruitPinkGlow", (focusP1) => {
+    // destroy glow image
+    focusP1.destroy();
+})
+// player 2
+player2.onCollide("flour", () => {
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, 30),
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+    onKeyDown("shift", () => {
+        addToInventory(2, "flour");
+    })
+});
 player2.onCollide("eggs", () => {
-    addToInventory(2, "eggs");
-    eggs.destroy();
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, 100),
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+    onKeyDown("shift", () => {
+        addToInventory(2, "eggs");
+    })
 });
+player2.onCollide("strawberry", () => {
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, 170),
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+    onKeyDown("shift", () => {
+        addToInventory(2, "strawberry");
+    })
+});
+player2.onCollide("lemon", () => {
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, 240),
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+    onKeyDown("shift", () => {
+        addToInventory(2, "lemon");
+    })
+});
+player2.onCollide("blueberry", () => {
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, 310),
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+    onKeyDown("shift", () => {
+        addToInventory(2, "blueberry");
+    })
+});
+player2.onCollide("carrot", () => {
+    var focusP2 = k.add([
+        sprite("fruitBlueGlow"),
+        pos(15, 380),
+        area(),
+        scale(.04),
+        "fruitBlueGlow"
+    ]);
+    onKeyDown("shift", () => {
+        addToInventory(2, "carrot");
+    })
+});
+// end focus display after collision is over
+player2.onCollideEnd("fruitBlueGlow", (focusP2) => {
+    // destroy glow image
+    focusP2.destroy();
+})
+
+
 
 /* GARBAGE */
 loadSprite("garbagePinkGlow", "sprites/garbagePinkGlow.png");
