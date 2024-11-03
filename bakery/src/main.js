@@ -69,6 +69,7 @@ loadSprite("frostingCounter", "sprites/frostingCounter.png");
 loadSprite("floor", "sprites/pink-floor.png");
 loadSprite("displayCase", "sprites/displayCase.png");
 loadSprite("register", "sprites/register.png");
+loadSprite("mixerBlue", "sprites/mixerBlue.png");
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -273,6 +274,14 @@ const oven = k.add([
 	body({ isStatic: true}),
 	"oven"
 ]);
+const oven2 = k.add([
+    sprite("oven"),
+    pos(510, 38), // Starting position
+    area(),        // Enable collision area
+    scale(.15),
+	body({ isStatic: true}),
+	"oven"
+]);
 
 k.add([
     sprite("counter"),
@@ -290,7 +299,7 @@ k.add([
 ]);
 k.add([
     sprite("counter"),
-    pos(520, 2), // Starting position
+    pos(612, 2), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
@@ -343,13 +352,20 @@ const frostingCounter = k.add([
 ]);
 const mixer = k.add([
     sprite("mixer"),
-    pos(660, 3), // Starting position
+    pos(752, 3), // Starting position
     area(),        // Enable collision area
     scale(.2),
 	body({ isStatic: true}),
 	"mixer"
 ]);
-
+const mixerBlue = k.add([
+    sprite("mixerBlue"),
+    pos(892, 4), // Starting position
+    area(),        // Enable collision area
+    scale(.2),
+	body({ isStatic: true}),
+	"mixerBlue"
+]);
 const strawberry = k.add([
     sprite("strawberry"),
     pos(300, 300), // Starting position
@@ -1213,23 +1229,8 @@ function createCustomer(ticketNumber, menuItem) {
 	customer_line.push(customer);
 }
 
-function moveCustomerUp() {
-    customer_line.shift();
-    line.shift();
-
-    for (let i = 0; i < customer_line.length; i++) {
-        const newPos = posLineArray[i];
-        customer_line[i].pos = vec2(newPos[0], newPos[1]);
-    }
-}
-
-function moveOrderedCustomersUp() {
-    ordered_line.shift();
-
-    for (let i = 0; i < ordered_line.length; i++) {
-        const newPos = orderedLinePosArray[i];
-        ordered_line[i].pos = vec2(newPos[0], newPos[1]);
-    }
+function moveCustomerUp(){
+	
 }
 
 function generateCustomers() {
