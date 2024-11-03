@@ -48,8 +48,9 @@ loadSprite("frostingCounter", "sprites/frostingCounter.png");
 loadSprite("floor", "sprites/floor-wooden.png");
 loadSprite("displayCase", "sprites/displayCase.png");
 loadSprite("register", "sprites/register.png");
-loadSprite("shopDoor", "sprites/temp-door.png");
-loadSprite("shopDoorOnFocus", "sprites/temp-door-focus.png");
+loadSprite("shopDoor", "sprites/temp-door1.png");
+loadSprite("shopDoorOnFocus", "sprites/temp-door1-focus.png");
+loadSprite("shelfBg", "sprites/shelf-temp.png");
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -428,9 +429,22 @@ player2.onCollide("eggs", () => {
 });
 
 /* SHOP DOOR COLLISIONS */
+var p1ShopDoorCollide = 0;
+var p2ShopDoorCollide = 0;
+var p1p2ShopDoorCollide = 0;
+
+// function to check if both p1 and p2 are colliding with shop door
+// returns 1 for true, otherwise returns 0
+function getDoorCollideStatus(p1ShopDoorCollide, p2ShopDoorCollide){
+    // if both p1 and p2 are colliding, change status of p1p2 to true
+    // otherwise take no action
+    if (p1ShopDoorCollide == 1 && p2ShopDoorCollide == 1){
+        return 1;
+    }
+    return 0;
+}
 
 // display focus glow version of shop door on collide
-// add a function to activate shelf view here too?
 player1.onCollide("shopDoor", (shopDoorFocus) => {
     shopDoorFocus = k.add([
         sprite("shopDoorOnFocus"),
@@ -440,6 +454,8 @@ player1.onCollide("shopDoor", (shopDoorFocus) => {
         scale(.15),
         "shopDoorOnFocus"
     ])
+    p1ShopDoorCollide = 1; // change status to true
+    p1p2ShopDoorCollide = getDoorCollideStatus(p1ShopDoorCollide, p2ShopDoorCollide);
 });
 player2.onCollide("shopDoor", (shopDoorFocus) => {
     shopDoorFocus = k.add([
@@ -450,14 +466,24 @@ player2.onCollide("shopDoor", (shopDoorFocus) => {
         scale(.15),
         "shopDoorOnFocus"
     ])
+    p2ShopDoorCollide = 1; // change status to true
+    p1p2ShopDoorCollide = getDoorCollideStatus(p1ShopDoorCollide, p2ShopDoorCollide);
 });
 // end focus display after collision is over
 player1.onCollideEnd("shopDoorOnFocus", (shopDoorFocus) => {
 	shopDoorFocus.destroy();
+    p1ShopDoorCollide = 0; // revert to false status
 });
 player2.onCollideEnd("shopDoorOnFocus", (shopDoorFocus) => {
 	shopDoorFocus.destroy();
+    p2ShopDoorCollide = 0; // revert to false status
 });
+
+// activate shelf (shelfBg) when BOTH p1 and p2 collide
+    // if p1p2ShopDoorCollideStatus == 1, then display option to activate shelf
+    // accept action keyboard input from p1 or p2
+    
+// add a function to activate shelf view here too
 
 /* RECIPES */
 
