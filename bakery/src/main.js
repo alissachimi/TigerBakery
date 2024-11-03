@@ -1417,7 +1417,7 @@ let balance = 100; // Coins
 
 function initiateOrder(){
 
-    if (line.length > 0){
+    if (line.length > 0 && ordered_line.length<3){
         
         const firstCustomer = line[0]; // First customer in line
     
@@ -1464,9 +1464,10 @@ function updateOrderSlot(index, menuItem) {
 function completeOrder(ticketNumber) {
     const orderIndex = activeOrders.findIndex(order => order.ticketNumber === ticketNumber);
     if (orderIndex !== -1){
-        activeOrders.splice(orderIndex, 1)[0];
+        activeOrders.splice(orderIndex, 1);
     }
     tipBakery();
+	ordered_line.splice(orderIndex, 1);
 
     moveOrderedCustomersUp();
 }
@@ -1537,8 +1538,32 @@ function createCustomer(ticketNumber, menuItem) {
 	customer_line.push(customer);
 }
 
-function moveCustomerUp(){
+function moveCustomerUp() {
+    for (let i = 0; i < customer_line.length; i++) {
+        // Move each customer to the position of the one ahead of them
+        customer_line[i].pos.x = posLineArray[i][0];
+        customer_line[i].pos.y = posLineArray[i][1];
+    }
+}
+
+function moveOrderedCustomersUp() {
+	// Move each ordered customer up one position and update the visual representation
+	for (let i = 0; i < ordered_line.length; i++) {
+		if (i < orderedLinePosArray.length - 1) {
+			ordered_line[i].pos.x = orderedLinePosArray[i][0];
+			ordered_line[i].pos.y = orderedLinePosArray[i][1];
+			updateOrderSlot(i, ordered_line[i].menuItem);
+		}
+	}
+
+	for(let j=ordered_line.length; j<3; j++){
+		activeOrders[j] = null;
+	}
 	
+	// Set the last slot to blank
+	if (ordered_line.length < orderedLinePosArray.length) {
+		updateOrderSlot(ordered_line.length, "blank");
+	}
 }
 
 function generateCustomers() {
