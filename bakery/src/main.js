@@ -710,7 +710,7 @@ player1.onCollide("mixerBlue", () => {
 		]);
 	} else {
 		if (blue_mixerTimer == null) {
-			takeBatterOut(player1);
+			blue_takeBatterOut(player1);
 		}
 	}
 });
@@ -764,7 +764,7 @@ player2.onCollide("mixerBlue", () => {
 		]);
 	} else {
 		if (blue_mixerTimer == null) {
-			takeBatterOut(player2);
+			blue_takeBatterOut(player2);
 		}
 	}
 });
@@ -834,6 +834,21 @@ function blue_useMixer() {
 	    ]);
 		blue_mixerTimer = null;
 	});
+}
+
+function blue_takeBatterOut(player) {
+	if ((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
+		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))) {
+		
+		blue_mixerGlow.destroy();
+		blue_mixerInUse = false;
+
+		if (player == player1) {
+			addToInventory(1, blue_recipeInMixer + "Batter");
+		} else {
+			addToInventory(2, blue_recipeInMixer + "Batter");
+		}
+	}
 }
 
 /* OVEN INTERACTIONS */
@@ -1040,7 +1055,7 @@ player1.onCollide("oven2", () => {
 player1.onCollideUpdate("oven2", () => {
 	onKeyPress(",", () => {
 		if (inOvenCollide2) {
-			let batterToCook = playerInventories.player1.findIndex(item => item && item.includes("Batter"));
+			let batterToCook = checkInventoryForBatter(playerInventories.player2);
 			if (ovenGlow2 && !batterTried2) {
 				ovenGlow2.destroy();
 			}
@@ -1089,7 +1104,7 @@ player2.onCollide("oven2", () => {
 player2.onCollideUpdate("oven2", () => {
 	onKeyPress(",", () => {
 		if (inOvenCollide2) {
-			let batterToCook = playerInventories.player2.findIndex(item => item && item.includes("Batter"));
+			let batterToCook = checkInventoryForBatter(playerInventories.player2);
 			if (ovenGlow2 && !batterTried2) {
 				ovenGlow2.destroy();
 			}
@@ -1151,6 +1166,10 @@ function useOven2() {
 }
 
 function takeCupcakesOut2(player) {
+    console.log("Trying to take cupcakes out for player:", player);
+    console.log("Current batter type in oven:", batterTypeInOven2);
+    console.log("Current ovenInUse2 state:", ovenInUse2);
+
 	// only if they have an open spot for the mix to go
 	if ((player == player1 && (playerInventories.player1[0] == null || playerInventories.player1[1] == null || playerInventories.player1[2] == null))
 		|| (player == player2 && (playerInventories.player2[0] == null || playerInventories.player2[1] == null || playerInventories.player2[2] == null))) {
