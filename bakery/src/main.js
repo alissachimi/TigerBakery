@@ -1933,7 +1933,7 @@ function generateCustomers() {
             };
             line.push(customer);
         }
-    }, 3000); // 20 seconds in milliseconds
+    }, 20000); // 20 seconds in milliseconds
 }
 
 
