@@ -40,6 +40,20 @@ loadSprite("jimr", "sprites/spritesheet_jimr.png", {
         idle: 0
     }
 });
+loadSprite("ouda", "sprites/spritesheet_ouda.png", {
+    sliceX: 3,
+    sliceY: 1,
+    anims: {
+        idle: 1
+    }
+});
+loadSprite("ekin", "sprites/spritesheet_ekin.png", {
+    sliceX: 3,
+    sliceY: 1,
+    anims: {
+        idle: 0
+    }
+});
 loadSprite("counter", "sprites/counter.png");
 loadSprite("mixer", "sprites/mixer.png");
 loadSprite("carrot", "sprites/carrot.png");
@@ -1164,7 +1178,7 @@ player2.onCollide("customer", (customer) => {
 /* CUSTOMERS */
 
 const line = [];
-const customerSprites = ["jimr"];
+const customerSprites = ["jimr", "ekin", "ouda"];
 
 function createCustomer(ticketNumber, menuItem) {
     const randomSprite = customerSprites[Math.floor(Math.random() * customerSprites.length)];
