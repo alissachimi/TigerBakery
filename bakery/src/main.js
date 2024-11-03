@@ -466,7 +466,7 @@ function addToInventory(player, item) {
 // Function to remove an item from a player's inventory
 function removeFromInventory(player, index){
     const inventory = playerInventories["player"+player];
-    inventory[index] = 'blank'; // Add the item to the first empty slot
+    inventory[index] = null; // Add the item to the first empty slot
     updateInventorySlot(player, index, "sprites/blank.png");
 }
 
@@ -727,6 +727,7 @@ player2.onCollide("garbage", () => {
 	
 })
 
+/*
 player1.onCollideUpdate("garbage", () => {
 	onKeyPress(",", () => {
 		playerInventories.player1 = [null, null, null];
@@ -747,6 +748,7 @@ player1.onCollideUpdate("garbage", () => {
 		]);
 	});
 });
+
 
 player2.onCollideUpdate("garbage", () => {
 	onKeyPress("shift", () => {
@@ -769,7 +771,7 @@ player2.onCollideUpdate("garbage", () => {
 		]);
 	});
 });
-
+*/
 k.onCollideEnd("player", "garbage", () => {
 	garbageGlow.destroy();
 });
@@ -2006,4 +2008,4 @@ function navigate_shelf(playerNum){
         // next item key = "capslock"
         // action key = "shift"
     }
-}
+a}
