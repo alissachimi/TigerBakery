@@ -1121,7 +1121,8 @@ function initiateOrder(){
 
 		ordered_line.push(customer_line[0]);
 		customer_line.shift();
-		
+
+        moveCustomerUp();
     }
 }
 
@@ -1142,6 +1143,8 @@ function completeOrder(ticketNumber) {
         activeOrders.splice(orderIndex, 1)[0];
     }
     tipBakery();
+
+    moveOrderedCustomersUp();
 }
 
 function checkInventoryForCupcake(playerInventory, menuItem) {
@@ -1210,8 +1213,23 @@ function createCustomer(ticketNumber, menuItem) {
 	customer_line.push(customer);
 }
 
-function moveCustomerUp(){
-	
+function moveCustomerUp() {
+    customer_line.shift();
+    line.shift();
+
+    for (let i = 0; i < customer_line.length; i++) {
+        const newPos = posLineArray[i];
+        customer_line[i].pos = vec2(newPos[0], newPos[1]);
+    }
+}
+
+function moveOrderedCustomersUp() {
+    ordered_line.shift();
+
+    for (let i = 0; i < ordered_line.length; i++) {
+        const newPos = orderedLinePosArray[i];
+        ordered_line[i].pos = vec2(newPos[0], newPos[1]);
+    }
 }
 
 function generateCustomers() {
