@@ -1360,7 +1360,7 @@ player1.onCollide("register", () => {
 	}
 	registerGlow = k.add([
 		sprite("registerPinkGlow"),
-        pos(950, 330),
+        pos(970, 335),
         area(),
 		scale(.25),
 		body({ isStatic: true}),
@@ -1384,7 +1384,7 @@ player2.onCollide("register", () => {
 	}
 	registerGlow = k.add([
 		sprite("registerBlueGlow"),
-        pos(950, 330),
+        pos(970, 335),
         area(),
 		scale(.25),
 		body({ isStatic: true}),
@@ -1436,7 +1436,18 @@ function initiateOrder(){
         if (index !== -1) {
             // Place the order in the first available slot
             activeOrders[index] = order;
+			if(registerGlow){
+				registerGlow.destroy();
+			}
             updateOrderSlot(index, menuItem);
+			registerGlow = k.add([
+				sprite("registerGreenGlow"),
+				pos(970, 335),
+				area(),
+				scale(.25),
+				body({ isStatic: true}),
+				"registerGreenGlow"
+			]);
         }
 
         line.shift(); // Remove this customer from the line
@@ -1447,7 +1458,20 @@ function initiateOrder(){
 		customer_line.shift();
 
         moveCustomerUp();
-    }
+    } else {
+		if(registerGlow){
+			registerGlow.destroy();
+		}
+		registerGlow = k.add([
+			sprite("registerBlackGlow"),
+			pos(970, 335),
+			area(),
+			scale(.25),
+			body({ isStatic: true}),
+			"registerBlackGlow"
+		]);
+	}
+	
 }
 
 function updateOrderSlot(index, menuItem) {
