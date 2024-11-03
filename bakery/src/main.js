@@ -1840,7 +1840,7 @@ player2.onCollideUpdate("frostingCounter", () => {
 
 			if(typeToFrost!=-1){
 				useFrosting();
-				updateInventorySlot(1, typeToFrost, "sprites/blank.png")
+				updateInventorySlot(2, typeToFrost, "sprites/blank.png")
 				typeBeingFrosted = playerInventories.player2[typeToFrost];
 				playerInventories.player2[typeToFrost] = null;
 
