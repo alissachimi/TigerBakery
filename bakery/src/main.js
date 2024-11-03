@@ -71,6 +71,7 @@ loadSprite("displayCase", "sprites/displayCase.png");
 loadSprite("register", "sprites/register.png");
 loadSprite("mixerBlue", "sprites/mixerBlue.png");
 loadSprite("ingredientShelf", "sprites/shelf-long.png");
+loadSprite("garbage", "sprites/garbage.png");
 
 /* ADD FLOOR */
 // note: MUST add floor before people otherwise it will cover them!!!
@@ -318,6 +319,14 @@ const counter3 = k.add([
     scale(.2),
 	body({ isStatic: true}),
 ]);
+const garabge = k.add([
+    sprite("garbage"),
+    pos(1038, 60), // Starting position
+    area(),        // Enable collision area
+    scale(.18),
+	body({ isStatic: true}),
+	"garbage"
+]);
 
 k.add([
     sprite("displayCase"),
@@ -496,6 +505,81 @@ player2.onCollide("eggs", () => {
     addToInventory(2, "eggs");
     eggs.destroy();
 });
+
+/* GARBAGE */
+loadSprite("garbagePinkGlow", "sprites/garbagePinkGlow.png");
+loadSprite("garbageBlueGlow", "sprites/garbageBlueGlow.png");
+loadSprite("garbageGreenGlow", "sprites/garbageGreenGlow.png");
+loadSprite("garbageBlackGlow", "sprites/garbageBlackGlow.png");
+
+var garbageGlow;
+player1.onCollide("garbage", () => {
+	if(garbageGlow){
+		garbageGlow.destroy()
+	}
+	garbageGlow = k.add([
+		sprite("garbagePinkGlow"),
+		pos(1031, 55),
+		area(),
+		scale(.2),
+		body({ isStatic: true }),
+		"garbagePinkGlow"
+	]);
+	
+})
+player2.onCollide("garbage", () => {
+	if(garbageGlow){
+		garbageGlow.destroy()
+	}
+	garbageGlow = k.add([
+		sprite("garbageBlueGlow"),
+		pos(1031, 55),
+		area(),
+		scale(.2),
+		body({ isStatic: true }),
+		"garbageBlueGlow"
+	]);
+	
+})
+
+player1.onCollideUpdate("garbage", () => {
+	onKeyPress(",", () => {
+		clearAllInventory(1, playerInventories)
+		if(garbageGlow){
+			garbageGlow.destroy()
+		}
+		garbageGlow = k.add([
+			sprite("garbageGreenGlow"),
+			pos(1031, 55),
+			area(),
+			scale(.2),
+			body({ isStatic: true }),
+			"garbageGreenGlow"
+		]);
+	});
+});
+
+player2.onCollideUpdate("garbage", () => {
+	onKeyPress("shift", () => {
+		clearAllInventory(2, playerInventories)
+		if(garbageGlow){
+			garbageGlow.destroy()
+		}
+		garbageGlow = k.add([
+			sprite("garbageGreenGlow"),
+			pos(1031, 55),
+			area(),
+			scale(.2),
+			body({ isStatic: true }),
+			"garbageGreenGlow"
+		]);
+	});
+});
+
+k.onCollideEnd("player", "garbage", () => {
+	garbageGlow.destroy();
+});
+
 
 /* RECIPES */
 
@@ -1644,13 +1728,21 @@ function generateCustomers() {
 generateCustomers();
 // function to empty a user's inventory (all items)
 function clearAllInventory(playerNum, playerInventories){
+	let cur_player;
+	if(playerNum == 1){
+		cur_player = player1;
+	} else {
+		cur_player = player2;
+	}
     // set all inventory slots to NULL (clear values)
-    playerInventories.playerNum = [null, null, null]
+    playerInventories.cur_player = [null, null, null]
 
     // remove all images in inventory display
-    for (let i=0; i < playerInventories.playerNum.length; i++){
+    for (let i=0; i < playerInventories.cur_player.length; i++){
         addToInventory(playerNum, "blank")
     }
+
+	playerInventories.cur_player = [null, null, null]
 }
 
 // get the current inventory slot
