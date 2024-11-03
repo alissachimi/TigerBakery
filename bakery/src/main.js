@@ -321,7 +321,7 @@ const counter3 = k.add([
 ]);
 const garabge = k.add([
     sprite("garbage"),
-    pos(1038, 60), // Starting position
+    pos(1038, 100), // Starting position
     area(),        // Enable collision area
     scale(.18),
 	body({ isStatic: true}),
@@ -518,9 +518,9 @@ player1.onCollide("garbage", () => {
 	}
 	garbageGlow = k.add([
 		sprite("garbagePinkGlow"),
-		pos(1031, 55),
+		pos(1038, 100),
 		area(),
-		scale(.2),
+		scale(.18),
 		body({ isStatic: true }),
 		"garbagePinkGlow"
 	]);
@@ -532,9 +532,9 @@ player2.onCollide("garbage", () => {
 	}
 	garbageGlow = k.add([
 		sprite("garbageBlueGlow"),
-		pos(1031, 55),
+		pos(1038, 100),
 		area(),
-		scale(.2),
+		scale(.18),
 		body({ isStatic: true }),
 		"garbageBlueGlow"
 	]);
@@ -543,15 +543,19 @@ player2.onCollide("garbage", () => {
 
 player1.onCollideUpdate("garbage", () => {
 	onKeyPress(",", () => {
-		clearAllInventory(1, playerInventories)
+		playerInventories.player1 = [null, null, null];
+				addToInventory(1, "blank");
+				addToInventory(1, "blank");
+				addToInventory(1, "blank");
+				playerInventories.player1 = [null, null, null];
 		if(garbageGlow){
 			garbageGlow.destroy()
 		}
 		garbageGlow = k.add([
 			sprite("garbageGreenGlow"),
-			pos(1031, 55),
+			pos(1038, 100),
 			area(),
-			scale(.2),
+			scale(.18),
 			body({ isStatic: true }),
 			"garbageGreenGlow"
 		]);
@@ -560,15 +564,20 @@ player1.onCollideUpdate("garbage", () => {
 
 player2.onCollideUpdate("garbage", () => {
 	onKeyPress("shift", () => {
-		clearAllInventory(2, playerInventories)
+
+		playerInventories.player2 = [null, null, null];
+				addToInventory(2, "blank");
+				addToInventory(2, "blank");
+				addToInventory(2, "blank");
+				playerInventories.player2 = [null, null, null];
 		if(garbageGlow){
 			garbageGlow.destroy()
 		}
 		garbageGlow = k.add([
 			sprite("garbageGreenGlow"),
-			pos(1031, 55),
+			pos(1038, 100),
 			area(),
-			scale(.2),
+			scale(.18),
 			body({ isStatic: true }),
 			"garbageGreenGlow"
 		]);
@@ -1745,22 +1754,22 @@ function generateCustomers() {
 // Start the customer generation process
 generateCustomers();
 // function to empty a user's inventory (all items)
-function clearAllInventory(playerNum, playerInventories){
-	let cur_player;
-	if(playerNum == 1){
-		cur_player = player1;
-	} else {
-		cur_player = player2;
-	}
+function clearAllInventory(player, playerInventories){
+
     // set all inventory slots to NULL (clear values)
-    playerInventories.cur_player = [null, null, null]
+    playerInventories.player = [null, null, null]
 
     // remove all images in inventory display
-    for (let i=0; i < playerInventories.cur_player.length; i++){
-        addToInventory(playerNum, "blank")
+    for (let i=0; i < playerInventories.player.length; i++){
+		if(player==player1){
+			addToInventory(1, "blank")
+		} else {
+			addToInventory(2, "blank")
+		}
+        
     }
 
-	playerInventories.cur_player = [null, null, null]
+	playerInventories.player = [null, null, null]
 }
 
 // get the current inventory slot
